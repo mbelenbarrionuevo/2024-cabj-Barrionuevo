@@ -88,7 +88,7 @@ Game >> checkMoveIsPossible: throwResult for: aSpaceship [
 { #category : 'action' }
 Game >> giveOneCardTo: aSpaceship [
 
-	(spaceshipsCardHands at: aSpaceship id) gainACard
+	(spaceshipsCardHands at: aSpaceship) gainACard
 ]
 
 { #category : 'initialization' }
@@ -108,9 +108,9 @@ Game >> initializeNumberOfSpaceships: anAmount with: aBoardCreator playWith: aCo
 
 	anAllyTankManager := AllyTankManager manage: spaceships.
 
-	spaceshipsCardHands := (1 to: anAmount) collect: [ :index |
-		                       SpaceshipCardHand startGameWith:
-			                       anEffectManager ].
+	spaceshipsCardHands := Dictionary new.
+	spaceships each: [ :spaceship |
+    	spaceshipsCardHands at: spaceship put: (SpaceshipCardHand startGameWith: anEffectManager)].
 
 	turnManager := TurnManager manage: spaceships.
 
@@ -205,9 +205,10 @@ Game >> resetSpaceshipsToCellOne [
 { #category : 'activation' }
 Game >> spaceshipId: anId useInstantCard: aCard toDoEffectFor: anObject [
 
-	| spaceshipCardHand cardInitialized |
+	| spaceshipCardHand cardInitialized spaceship |
 	cardInitialized := aCard toDoEffectFor: anObject.
-	spaceshipCardHand := spaceshipsCardHands at: anId.
+	spaceship := spaceships detectSpaceshipWithId: anId.
+	spaceshipCardHand := spaceshipsCardHands at: spaceship.
 	(spaceshipCardHand use: aCard) ifTrue: [
 		cardInitialized activateEffectOn: self forSpaceship: anId ]
 ]
@@ -252,8 +253,7 @@ Game >> usePermanentCard: aCard toDoEffectFor: anId [
 	| currentSpaceshipCardHand cardInitialized currentSpaceship |
 	currentSpaceship := turnManager spaceshipPlaying.
 	cardInitialized := aCard toDoEffectFor: anId.
-	currentSpaceshipCardHand := spaceshipsCardHands at:
-		                            currentSpaceship id.
+	currentSpaceshipCardHand := spaceshipsCardHands at: currentSpaceship.
 	(currentSpaceshipCardHand use: aCard) ifFalse: [ ^ self ].
 	cardInitialized
 		activateEffectOn: self
