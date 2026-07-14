@@ -108,5 +108,5 @@ BoardCreatorTest >> test04BoardCreatorRecivesCollectionOfNotCellsThenErrorIsThro
 				                 ofLaps: 2
 				                 withWormholeCreator: aWormholeCreator ]
 		raise: Error
-		withMessage: 'A board creator must recive a collection of cells'
+		withMessage: 'A board creator must receive a collection of cells'
 ]

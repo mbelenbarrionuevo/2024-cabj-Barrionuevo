@@ -13,10 +13,9 @@ Class {
 { #category : 'instance creation' }
 BoardCreator class >> with: collectionOfCells ofLaps: numberOfLaps withWormholeCreator: aWormholeCreator [
 
-	(collectionOfCells anySatisfy: [ :cell |
-		 cell class ~= Cell and: [ cell class superclass ~= Cell ] ])
-		ifTrue: [
-		Error signal: 'A board creator must recive a collection of cells' ].
+	(collectionOfCells anySatisfy: [ :cell | cell isCell not ])
+    ifTrue: [
+        Error signal: 'A board creator must receive a collection of cells' ].
 
 	^ self new
 		  initializeWith: collectionOfCells

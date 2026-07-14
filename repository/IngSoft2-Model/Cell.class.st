@@ -10,3 +10,8 @@ Cell >> applyEffectTo: aSpaceship on: aGame [
 
 	
 ]
+
+{ #category : 'action' }
+Cell >> isCell [
+    ^ true
+]
