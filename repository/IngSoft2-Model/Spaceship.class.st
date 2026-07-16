@@ -99,10 +99,20 @@ Spaceship >> position [
 	^ objectPosition
 ]
 
+{ #category : 'action' }
+Spaceship >> resetToCell: aCellNumber andLap: aLapNumber [ 
+    | currentCell currentLap |
+    
+    currentCell := objectPosition cell.
+    currentLap := objectPosition lap.
+    objectPosition updateCell: aCellNumber - currentCell.
+    objectPosition updateLap: aLapNumber - currentLap.
+
+
+]
+
 { #category : 'initialization' }
 Spaceship >> resetToOne [
 
-	| currentCell |
-	currentCell := objectPosition cell.
-	objectPosition updateCell: 1 - currentCell
+	self resetToCell: 1 andLap: objectPosition lap.
 ]

@@ -345,3 +345,50 @@ GameWithDefinedPositionsOfCellsTest >> test10SpaceshipFallsOnBlackHoleThenGoesBa
 
 	self assert: aGame spaceships cellsOfSpaceships equals: result
 ]
+
+{ #category : 'black hole' }
+GameWithDefinedPositionsOfCellsTest >> test11SpaceshipFallsOnBlackHoleWithoutFuelThenReturnsToStartOfRoundTwo [
+
+	| aGame resultCells resultLaps |
+
+	aWormholeCreator := WormholeCreator withBeginning: 8 andEnd: 9.
+	collectionOfCells := OrderedCollection new.
+
+	10 timesRepeat: [ collectionOfCells add: Cell new ].
+
+	collectionOfCells at: 2 put: BlackHoleCell new.
+
+	aBoardCreator := BoardCreator
+		                 with: collectionOfCells
+		                 ofLaps: 2
+		                 withWormholeCreator: aWormholeCreator.
+
+	gameDeck := EffectManager
+		            manage: (OrderedCollection
+				             with: AccelerationCard new
+				             with: AllyCard new
+				             with: OverloadCard new
+				             with: RedoCard new
+				             with: RepeatCard new
+				             with: CancellationCard new)
+		            withProbabilitiesDistribution: #( 16 16 17 17 17 17 ).
+	aLoadedDie := LoadedDie of: #( 6 5 7  ).
+
+	aGame := Game
+		         numberOfSpaceships: 1
+		         with: aBoardCreator
+		         playWith: aLoadedDie
+		         andGameDeck: gameDeck.
+
+	aGame moveSpaceship.
+	aGame moveSpaceship.
+
+	resultCells := Dictionary new.
+	resultCells at: 1 put: 1. 
+	resultLaps := Dictionary new.
+	resultLaps at: 1 put: 2. 
+	
+	self assert: aGame spaceships cellsOfSpaceships equals: resultCells.
+	self assert: aGame spaceships lapsOfSpaceships equals: resultLaps.
+	
+]

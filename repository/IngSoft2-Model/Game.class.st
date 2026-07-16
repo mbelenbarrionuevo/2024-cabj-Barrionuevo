@@ -53,15 +53,24 @@ Game >> applyHyperGravityOn: aSpaceship withValue: value [
 ]
 
 { #category : 'action' }
-Game >> checkAndHandleFuelDepletion: aSpaceship [
+Game >> checkAndHandleFuelDepletion: aSpaceship startingLap: aStartingLap [
 
-	| spaceshipsWithoutFuel |
-	spaceshipsWithoutFuel := anAllyTankManager spaceshipsWithEmptyFuelTank:
-		              aSpaceship.
-	spaceshipsWithoutFuel do: [ :spaceship |
-		turnManager lostTurns: 2 by: spaceship.
-		spaceship resetToOne.
-		spaceship loadFuel ]
+	| spaceshipsWithoutFuel alliesWithoutFuel |
+    spaceshipsWithoutFuel := anAllyTankManager spaceshipsWithEmptyFuelTank: aSpaceship.
+    spaceshipsWithoutFuel isEmpty ifTrue: [ ^ self ].
+    
+    (spaceshipsWithoutFuel includes: aSpaceship) ifTrue: [
+        turnManager lostTurns: 2 by: aSpaceship.
+        aSpaceship resetToCell: 1 andLap: aStartingLap.
+        aSpaceship loadFuel.
+    ].
+    
+    alliesWithoutFuel := spaceshipsWithoutFuel copyWithout: aSpaceship.
+    alliesWithoutFuel do: [ :ally |
+        turnManager lostTurns: 2 by: ally.
+        ally resetToOne.
+        ally loadFuel.
+    ]
 ]
 
 { #category : 'checking' }
@@ -134,12 +143,14 @@ Game >> lastCellEffect [
 { #category : 'action' }
 Game >> move: spaceship a: numberOfMovements [
 
-	| positionOfSpaceship aNumberOfMovements |
+	| positionOfSpaceship aNumberOfMovements startingLap |
 	aNumberOfMovements := self
 		                      checkMoveIsPossible: numberOfMovements
 		                      for: spaceship.
 
 	positionOfSpaceship := spaceship position.
+	
+	startingLap := positionOfSpaceship lap.
 
 	anAllyTankManager
 		spaceship: spaceship
@@ -149,7 +160,7 @@ Game >> move: spaceship a: numberOfMovements [
 
 	positionOfSpaceship adjustPositionWith: finishLine.
 
-	self checkAndHandleFuelDepletion: spaceship
+	self checkAndHandleFuelDepletion: spaceship startingLap: startingLap.
 ]
 
 { #category : 'action' }

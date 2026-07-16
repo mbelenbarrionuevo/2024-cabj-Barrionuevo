@@ -851,3 +851,48 @@ GameCardTest >> test33GamePlaysWithDeckWithProbabilisticDistributionThenSpaceshi
 
 	self assert: aGame spaceships cellsOfSpaceships equals: result
 ]
+
+{ #category : 'spaceshipCardHand' }
+GameCardTest >> test34AllysInDifferentLapsRunOutOfFuelThenEachReturnsToTheirOwnLapStart [
+	| aGame resultCells resultLaps |
+	aWormholeCreator := WormholeCreator withBeginning: 8 andEnd: 9.
+	collectionOfCells := OrderedCollection new.
+	10 timesRepeat: [ collectionOfCells add: Cell new ].
+	aBoardCreator := BoardCreator
+		                 with: collectionOfCells
+		                 ofLaps: 3
+		                 withWormholeCreator: aWormholeCreator.
+	gameDeck := LoadedEffectManager manage: (OrderedCollection
+			             with: AccelerationCard
+			             with: AllyCard
+			             with: OverloadCard
+			             with: RedoCard
+			             with: RepeatCard
+			             with: CancellationCard).
+
+	aLoadedDie := LoadedDie of: #( 6 3 6 3 6 3 6 7 ).
+	aGame := Game
+		         numberOfSpaceships: 2
+		         with: aBoardCreator
+		         playWith: aLoadedDie
+		         andGameDeck: gameDeck.
+	
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	
+	aGame usePermanentCard: AllyCard toDoEffectFor: 2.
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	
+	aGame moveSpaceship. 
+	resultCells := Dictionary new.
+	resultCells at: 1 put: 1.
+	resultCells at: 2 put: 1.
+	resultLaps := Dictionary new.
+	resultLaps at: 1 put: 2. 
+	resultLaps at: 2 put: 1. 
+	self assert: aGame spaceships cellsOfSpaceships equals: resultCells.
+	self assert: aGame spaceships lapsOfSpaceships equals: resultLaps.
+]
