@@ -36,16 +36,17 @@ AllyTankManager >> initializeManage: aCollectionOfSpaceships [
 { #category : 'action' }
 AllyTankManager >> spaceship: aSpaceship wantsToUse: anAmountOfFuel [
 
-    | tankSpaceshipToMove tankAllySpaceship fuelToShare |
+    | tankSpaceshipToMove tankAllySpaceship fuelToShare fuelNeeded |
     (dictionaryOfAllys includesKey: aSpaceship) ifFalse: [ ^ self ].
     
-    "CAMBIO: Le pedimos el tanque directamente al objeto nave"
-    tankSpaceshipToMove := aSpaceship objectFuelTank.
-    tankAllySpaceship := (dictionaryOfAllys at: aSpaceship) objectFuelTank.
+    tankSpaceshipToMove := aSpaceship fuelTank.
+    tankAllySpaceship := (dictionaryOfAllys at: aSpaceship) fuelTank.
 
-    fuelToShare := (tankSpaceshipToMove loadedWith - anAmountOfFuel) abs.
+	fuelNeeded := anAmountOfFuel abs.
 
-    tankSpaceshipToMove loadedWith - anAmountOfFuel < 0 ifFalse: [
+    fuelToShare := (tankSpaceshipToMove loadedWith - fuelNeeded) abs.
+
+    tankSpaceshipToMove loadedWith - fuelNeeded < 0 ifFalse: [
         ^ self ].
     tankAllySpaceship useFuel: fuelToShare.
     tankSpaceshipToMove loadFuel: fuelToShare
@@ -58,11 +59,11 @@ AllyTankManager >> spaceshipsWithEmptyFuelTank: arg1 [
 	| tmp1 tmp2 |
 	tmp1 := OrderedCollection new.
 	(dictionaryOfAllys includesKey: arg1) ifFalse: [
-			arg1 objectFuelTank isEmpty ifFalse: [ ^ tmp1 ].
+			arg1 fuelTank isEmpty ifFalse: [ ^ tmp1 ].
 			tmp1 add: arg1.
 			^ tmp1 ].
 	tmp2 := dictionaryOfAllys at: arg1.
-	(arg1 objectFuelTank isEmpty and: tmp2 objectFuelTank isEmpty)
+	(arg1 fuelTank isEmpty and: tmp2 fuelTank isEmpty)
 		ifFalse: [ ^ tmp1 ].
 	tmp1
 		add: arg1;

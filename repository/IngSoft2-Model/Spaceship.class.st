@@ -54,6 +54,12 @@ Spaceship >> changeCapacity: aNumber [
 	aFuelTank changeCapacity: aNumber
 ]
 
+{ #category : 'set and get' }
+Spaceship >> fuelTank [
+
+	^ aFuelTank
+]
+
 { #category : 'accessing' }
 Spaceship >> id [
 
@@ -85,12 +91,6 @@ Spaceship >> move: aNumberOfMovements [
 	objectPosition updateCell: aux.
 
 	aFuelTank useFuel: aux abs
-]
-
-{ #category : 'set and get' }
-Spaceship >> objectFuelTank [
-
-	^ aFuelTank
 ]
 
 { #category : 'set and get' }

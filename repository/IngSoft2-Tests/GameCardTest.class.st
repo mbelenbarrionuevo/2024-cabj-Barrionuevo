@@ -885,8 +885,7 @@ GameCardTest >> test34AllysInDifferentLapsRunOutOfFuelThenEachReturnsToTheirOwnL
 	aGame moveSpaceship. 
 	aGame moveSpaceship. 
 	aGame moveSpaceship. 
-	
-	aGame moveSpaceship. 
+	 
 	resultCells := Dictionary new.
 	resultCells at: 1 put: 1.
 	resultCells at: 2 put: 1.
@@ -895,4 +894,39 @@ GameCardTest >> test34AllysInDifferentLapsRunOutOfFuelThenEachReturnsToTheirOwnL
 	resultLaps at: 2 put: 1. 
 	self assert: aGame spaceships cellsOfSpaceships equals: resultCells.
 	self assert: aGame spaceships lapsOfSpaceships equals: resultLaps.
+]
+
+{ #category : 'spaceshipCardHand' }
+GameCardTest >> test35SpaceshipFallsOnBlackHoleWithInsufficientFuelUsesAllyFuel [
+
+	| aGame |
+	aWormholeCreator := WormholeCreator withBeginning: 8 andEnd: 9.
+	collectionOfCells := OrderedCollection new.
+	10 timesRepeat: [ collectionOfCells add: Cell new ].
+	collectionOfCells at: 6 put: BlackHoleCell new.
+
+	aBoardCreator := BoardCreator
+		                 with: collectionOfCells
+		                 ofLaps: 2
+		                 withWormholeCreator: aWormholeCreator.
+
+	gameDeck := LoadedEffectManager manage: (OrderedCollection with: AllyCard).
+	aLoadedDie := LoadedDie of: #( 5 6).
+
+	aGame := Game
+		         numberOfSpaceships: 2
+		         with: aBoardCreator
+		         playWith: aLoadedDie
+		         andGameDeck: gameDeck.
+
+	aGame usePermanentCard: AllyCard toDoEffectFor: 2.
+
+	(aGame spaceships detectSpaceshipWithId: 1) fuelTank useFuel: 8.
+	
+	aGame moveSpaceship.
+
+	self assert: (aGame spaceships detectSpaceshipWithId: 1) fuelTank loadedWith equals: 0.
+	self assert: (aGame spaceships detectSpaceshipWithId: 2) fuelTank loadedWith equals: 7.
+	self assert: ((aGame spaceships detectSpaceshipWithId: 1) position cell) equals: 2.
+
 ]

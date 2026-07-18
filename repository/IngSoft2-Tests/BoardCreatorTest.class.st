@@ -82,8 +82,8 @@ BoardCreatorTest >> test03BoardCreatorCreatesBoardWithCollectionOfCellsThenBoard
 	board := aBoardCreator createBoard.
 
 	self assert: ((board at: 1) isKindOf: Cell).
-	self assert: ((board at: 2) isKindOf: Wormhole).
-	self assert: ((board at: 3) isKindOf: Wormhole).
+	self assert: ((board at: 2) isKindOf: WormholeCell).
+	self assert: ((board at: 3) isKindOf: WormholeCell).
 	self assert: ((board at: 4) isKindOf: BlackHoleCell).
 	self assert: ((board at: 5) isKindOf: AtomicBombCell).
 	self assert: ((board at: 6) isKindOf: CardDispenserCell).
