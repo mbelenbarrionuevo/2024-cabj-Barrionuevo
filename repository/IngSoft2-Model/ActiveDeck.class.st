@@ -23,13 +23,13 @@ ActiveDeck >> activate: aCard [
 ]
 
 { #category : 'action' }
-ActiveDeck >> applyEffectOn: throwResult withCurrentSpaceship: spaceshipId [
+ActiveDeck >> applyEffectOn: throwResult withCurrentSpaceship: aSpaceship [
 
 	| auxNumber |
 	auxNumber := throwResult.
 	cards isEmpty ifTrue: [ ^ throwResult ].
 	self each: [ :card |
-		auxNumber := card applyEffectOn: auxNumber for: spaceshipId ].
+        auxNumber := card applyEffectOn: auxNumber for: aSpaceship ].
 	^ auxNumber
 ]
 

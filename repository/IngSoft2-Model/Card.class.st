@@ -44,3 +44,11 @@ Card >> initializeToDoEffectFor: aSpaceshipId [
 
 	spaceshipAffected := aSpaceshipId
 ]
+
+{ #category : 'initialization' }
+Card >> targetIdOf: aTarget [
+    (aTarget respondsTo: #id)
+        ifTrue: [ ^ aTarget id ]
+        ifFalse: [ ^ aTarget ]
+
+]

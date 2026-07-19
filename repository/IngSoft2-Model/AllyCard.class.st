@@ -14,7 +14,7 @@ AllyCard >> = aCard [
 
 	| compareResult |
 	compareResult := self class == aCard class.
-	compareResult ifTrue: [ ^ spaceshipAffected = aCard ally ].
+	compareResult ifTrue: [ ^ (self targetIdOf: spaceshipAffected) = (self targetIdOf: aCard ally) ].
 	^ compareResult
 ]
 

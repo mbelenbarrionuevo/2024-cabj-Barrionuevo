@@ -7,21 +7,24 @@ Class {
 
 { #category : 'tests' }
 CardTest >> test01ActiveDeckActivateOverLoadCardThenApplyEffectApplysEffectOfIt [
-	| aActiveDeck |
+	| aActiveDeck aSpaceship |
 	aActiveDeck := ActiveDeck startGame.
-	aActiveDeck activate: (OverloadCard toDoEffectFor: 2).
+	aSpaceship := Spaceship launchWithFuel: 10.
+	aActiveDeck activate: (OverloadCard toDoEffectFor: aSpaceship).
 
-	self assert: (aActiveDeck applyEffectOn: 10 withCurrentSpaceship: 2) equals: 8
+	self assert: (aActiveDeck applyEffectOn: 10 withCurrentSpaceship: aSpaceship) equals: 8
 ]
 
 { #category : 'tests' }
 CardTest >> test02ActiveDeckRemoveOverloadCardThenNoEffectOnThatId [
-	| aActiveDeck |
+	| aActiveDeck spaceshipOne spaceshipTwo |
 	aActiveDeck := ActiveDeck startGame.
-	aActiveDeck activate: (OverloadCard toDoEffectFor: 2).
-	aActiveDeck activate: (OverloadCard toDoEffectFor: 3).
+	spaceshipOne := Spaceship launchWithFuel: 10.
+	spaceshipTwo := Spaceship launchWithFuel: 10.
+	aActiveDeck activate: (OverloadCard toDoEffectFor: spaceshipOne).
+	aActiveDeck activate: (OverloadCard toDoEffectFor: spaceshipTwo).
 	
-	aActiveDeck removeACard: (OverloadCard toDoEffectFor: 3).
+	aActiveDeck removeACard: (OverloadCard toDoEffectFor: spaceshipTwo).
 
-	self assert: (aActiveDeck applyEffectOn: 10 withCurrentSpaceship: 3) equals: 10
+	self assert: (aActiveDeck applyEffectOn: 10 withCurrentSpaceship: spaceshipTwo) equals: 10
 ]

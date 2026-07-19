@@ -6,7 +6,7 @@ Class {
 }
 
 { #category : 'effect' }
-AccelerationCard >> applyEffectOn: throwResult for: spaceshipId [
+AccelerationCard >> applyEffectOn: throwResult for: aSpaceship [
 
 	^ throwResult + 1
 ]

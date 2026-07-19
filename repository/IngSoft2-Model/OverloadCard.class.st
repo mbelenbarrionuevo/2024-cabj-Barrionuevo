@@ -10,14 +10,14 @@ OverloadCard >> = aCard [
 
 	| compareResult |
 	compareResult := self class == aCard class.
-	compareResult ifTrue: [ ^ spaceshipAffected = aCard id ].
+	compareResult ifTrue: [ ^ (self targetIdOf: spaceshipAffected) = (self targetIdOf: aCard id) ].
 	^ compareResult
 ]
 
 { #category : 'effect' }
-OverloadCard >> applyEffectOn: throwResult for: aSpaceshipId [
+OverloadCard >> applyEffectOn: throwResult for: aSpaceship [
 
-	spaceshipAffected = aSpaceshipId ifTrue: [ ^ throwResult - 2 ].
+	spaceshipAffected = aSpaceship ifTrue: [ ^ throwResult - 2 ].
 	^ throwResult
 ]
 

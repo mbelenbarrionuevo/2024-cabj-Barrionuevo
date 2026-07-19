@@ -110,3 +110,12 @@ CollectionOfSpaceships >> ranking [
 
 	^ sortedSpaceships collect: [ :spaceship | spaceship ]
 ]
+
+{ #category : 'accessing' }
+CollectionOfSpaceships >> resolve: aSpaceshipOrId [
+    aSpaceshipOrId ifNil: [ ^ nil ].
+    ^ spaceships
+        detect: [ :spaceship | (spaceship id = aSpaceshipOrId) or: [ spaceship = aSpaceshipOrId ] ]
+        ifNone: [ ^ aSpaceshipOrId ]
+
+]

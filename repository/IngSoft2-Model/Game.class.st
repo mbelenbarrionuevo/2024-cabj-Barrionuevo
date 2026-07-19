@@ -35,12 +35,13 @@ Game >> activateCard: arg1 [
 ]
 
 { #category : 'accessing' }
-Game >> ally: arg1 with: arg2 [
+Game >> ally: aSpaceshipOrIdOne with: aSpaceshipOrIdTwo [
 
-	| tmp1 tmp2 |
-	tmp1 := spaceships detectSpaceshipWithId: arg1.
-	tmp2 := spaceships detectSpaceshipWithId: arg2.
-	anAllyTankManager ally: tmp1 with: tmp2
+    | firstSpaceship secondSpaceship |
+
+	firstSpaceship := spaceships resolve: aSpaceshipOrIdOne.
+    secondSpaceship := spaceships resolve: aSpaceshipOrIdTwo.
+    anAllyTankManager ally: firstSpaceship with: secondSpaceship
 ]
 
 { #category : 'action' }
@@ -214,12 +215,14 @@ Game >> rewardManager: aRewardManager [
 { #category : 'activation' }
 Game >> spaceshipId: anId useInstantCard: aCard toDoEffectFor: anObject [
 
-	| spaceshipCardHand cardInitialized spaceship |
-	cardInitialized := aCard toDoEffectFor: anObject.
-	spaceship := spaceships detectSpaceshipWithId: anId.
-	spaceshipCardHand := spaceshipsCardHands at: spaceship.
-	(spaceshipCardHand use: aCard) ifTrue: [
-		cardInitialized activateEffectOn: self forSpaceship: anId ]
+	 | spaceshipCardHand cardInitialized spaceship target |
+    spaceship := spaceships resolve: anId. 
+    target := spaceships resolve: anObject. 
+                      
+    cardInitialized := aCard toDoEffectFor: target.
+    spaceshipCardHand := spaceshipsCardHands at: spaceship.
+    (spaceshipCardHand use: aCard) ifTrue: [
+        cardInitialized activateEffectOn: self forSpaceship: spaceship ]
 ]
 
 { #category : 'accessing' }
@@ -229,37 +232,39 @@ Game >> spaceships [
 ]
 
 { #category : 'accessing' }
-Game >> stopAlly: arg1 [
+Game >> stopAlly: aSpaceshipOrId [
 
-	| tmp1 |
-	tmp1 := spaceships detectSpaceshipWithId: arg1.
-	anAllyTankManager stopAlly: tmp1
+	| spaceshipToStop |
+    spaceshipToStop := spaceships resolve: aSpaceshipOrId.
+    anAllyTankManager stopAlly: spaceshipToStop
 ]
 
 { #category : 'action' }
 Game >> throwDiceAndCheckEffects [
-	| tmp1 tmp2 tmp4 |
-	tmp1 := dice throw.
-	tmp4 := turnManager spaceshipPlaying.
-	tmp1 := aActiveDeck applyEffectOn: tmp1 withCurrentSpaceship: tmp4 id.
-	tmp2 := dice amountOfFaces.
-	tmp1 = tmp2 ifTrue: [
-		self rewardManager applyRewardOn: tmp4 ]. "<- Cambiado aquí"
-	^ tmp1
+	| throwResult maxThrow currentSpaceship |
+	throwResult := dice throw.
+	currentSpaceship := turnManager spaceshipPlaying.
+	throwResult := aActiveDeck applyEffectOn: throwResult withCurrentSpaceship: currentSpaceship.
+	maxThrow := dice amountOfFaces.
+	throwResult = maxThrow ifTrue: [
+		self rewardManager applyRewardOn: currentSpaceship ].
+	^ throwResult
 
 ]
 
 { #category : 'activation' }
 Game >> usePermanentCard: aCard toDoEffectFor: anId [
 
-	| currentSpaceshipCardHand cardInitialized currentSpaceship |
-	currentSpaceship := turnManager spaceshipPlaying.
-	cardInitialized := aCard toDoEffectFor: anId.
-	currentSpaceshipCardHand := spaceshipsCardHands at: currentSpaceship.
-	(currentSpaceshipCardHand use: aCard) ifFalse: [ ^ self ].
-	cardInitialized
-		activateEffectOn: self
-		forSpaceship: currentSpaceship id
+	| currentSpaceshipCardHand cardInitialized currentSpaceship targetSpaceship |
+    currentSpaceship := turnManager spaceshipPlaying.
+    targetSpaceship := spaceships resolve: anId. 
+                               
+    cardInitialized := aCard toDoEffectFor: targetSpaceship.
+    currentSpaceshipCardHand := spaceshipsCardHands at: currentSpaceship.
+    (currentSpaceshipCardHand use: aCard) ifFalse: [ ^ self ].
+    cardInitialized
+        activateEffectOn: self
+        forSpaceship: currentSpaceship
 ]
 
 { #category : 'results' }
