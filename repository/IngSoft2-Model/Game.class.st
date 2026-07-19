@@ -155,10 +155,9 @@ Game >> move: spaceship a: numberOfMovements [
 	self checkAndHandleFuelDepletion: spaceship startingLap: startingLap.
 ]
 
-{ #category : 'action' }
-Game >> moveAllTheSpaceshipsExcept: arg1 withValueToMove: arg2 [
-
-	spaceships each: [ :arg3 | self move: arg3 a: arg2 ] but: arg1
+{ #category : 'results' }
+Game >> moveAllTheSpaceshipsExcept: aSpaceship withValueToMove: aValue [
+	spaceships each: [ :spaceship | self move: spaceship a: aValue ] but: aSpaceship.
 ]
 
 { #category : 'action' }

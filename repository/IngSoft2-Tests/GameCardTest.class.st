@@ -930,3 +930,28 @@ GameCardTest >> test35SpaceshipFallsOnBlackHoleWithInsufficientFuelUsesAllyFuel 
 	self assert: ((aGame spaceships detectSpaceshipWithId: 1) position cell) equals: 2.
 
 ]
+
+{ #category : 'spaceshipCardHand' }
+GameCardTest >> test36SpaceshipCancelsAllyCardThenAllianceStops [
+   | aGame spaceshipOne spaceshipTwo |
+	aLoadedDie := LoadedDie of: #( 9 1 9 1 9 ).
+	aGame := Game
+		         numberOfSpaceships: 2
+		         with: aBoardCreator
+		         playWith: aLoadedDie
+		         andGameDeck: gameDeck.
+	
+	spaceshipOne := aGame spaceships ranking detect: [ :s | s id = 1 ].
+	spaceshipTwo := aGame spaceships ranking detect: [ :s | s id = 2 ].
+	
+	aGame usePermanentCard: AllyCard toDoEffectFor: spaceshipTwo.
+	
+	aGame spaceshipId: spaceshipOne useInstantCard: CancellationCard toDoEffectFor: (AllyCard toDoEffectFor: spaceshipTwo).
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	
+	self assert: spaceshipTwo amountOfFuel equals: 6
+]
