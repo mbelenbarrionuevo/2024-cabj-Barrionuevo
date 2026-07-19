@@ -418,9 +418,9 @@ GameLoadedDieTest >> test18WhenTheSpaceshipTwoIsInTheFirstPlaceTheSpaceshipOneIs
 ]
 
 { #category : 'fuelTests' }
-GameLoadedDieTest >> test20SpaceshipGainsCapacityOfFuelBeacuseOfThrowingMaxResultOfDice [
+GameLoadedDieTest >> test20SpaceshipThrowsMaxRollGetsPositiveRewardCapacityIncreases [
 
-	| aGame spaceship |
+	| aGame spaceship aRewardManager |
 	aLoadedDie := LoadedDie of: #( 4 ).
 
 	aGame := Game
@@ -429,6 +429,8 @@ GameLoadedDieTest >> test20SpaceshipGainsCapacityOfFuelBeacuseOfThrowingMaxResul
 		         playWith: aLoadedDie
 		         andGameDeck: gameDeck.
 
+	aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #(0.5)).
+	aGame rewardManager: aRewardManager.
 	aGame moveSpaceship.
 	aGame reloadSpaceship.
 
@@ -476,4 +478,26 @@ GameLoadedDieTest >> test22SpaceshipLoosesOneFuelBecauseOfMaxDiceThrow [
 	spaceship := aGame spaceships ranking at: 1.
 
 	self assert: (spaceship amountOfFuel between: 3 and: 4)
+]
+
+{ #category : 'fuelTests' }
+GameLoadedDieTest >> test23SpaceshipThrowsMaxRollGetsNegativeRewardCapacityDecreases [
+    | aGame spaceship aRewardManager |
+    aLoadedDie := LoadedDie of: #( 4 ).
+    aGame := Game
+                 numberOfSpaceships: 1
+                 with: aBoardCreator
+                 playWith: aLoadedDie
+                 andGameDeck: gameDeck.
+
+    aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #( 0.9 )).
+    aGame rewardManager: aRewardManager.
+
+    aGame moveSpaceship.
+    aGame reloadSpaceship.
+
+    spaceship := aGame spaceships ranking at: 1.
+    
+    self assert: spaceship amountOfFuel equals: 7.
+
 ]
