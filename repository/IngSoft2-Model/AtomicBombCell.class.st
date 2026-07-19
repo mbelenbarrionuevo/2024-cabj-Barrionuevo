@@ -6,7 +6,12 @@ Class {
 }
 
 { #category : 'action' }
-AtomicBombCell >> applyEffectTo: aSpaceship on:aGame [
+AtomicBombCell >> applyBaseEffectTo: aSpaceship on: aGame [
+    aSpaceship resetToOne
+]
 
-	aGame resetSpaceshipsToCellOne.
+{ #category : 'action' }
+AtomicBombCell >> targetType [
+    ^ #all
+
 ]

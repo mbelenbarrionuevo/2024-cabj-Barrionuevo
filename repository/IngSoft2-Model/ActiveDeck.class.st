@@ -22,6 +22,12 @@ ActiveDeck >> activate: aCard [
 	lastCardPlayed := aCard class
 ]
 
+{ #category : 'accessing' }
+ActiveDeck >> activeReversePolarityCardsFor: aCellIndex [
+    ^ cards select: [ :card | 
+        card isReversePolarity and: [ card cellIndex = aCellIndex ] ]
+]
+
 { #category : 'action' }
 ActiveDeck >> applyEffectOn: throwResult withCurrentSpaceship: aSpaceship [
 

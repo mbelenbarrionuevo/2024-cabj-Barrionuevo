@@ -15,15 +15,17 @@ MoonWalkCell class >> withValueToMove: aValue [
 ]
 
 { #category : 'action' }
-MoonWalkCell >> applyEffectTo: aSpaceship on:aGame [
-
-	aGame
-		moveAllTheSpaceshipsExcept: aSpaceship
-		withValueToMove: value negated.
+MoonWalkCell >> applyBaseEffectTo: aSpaceship on: aGame [
+    aGame move: aSpaceship a: value negated
 ]
 
 { #category : 'initialization' }
 MoonWalkCell >> initializeWithValueToMove: aValue [
 
 	value := aValue.
+]
+
+{ #category : 'initialization' }
+MoonWalkCell >> targetType [
+    ^ #allExceptSingle
 ]

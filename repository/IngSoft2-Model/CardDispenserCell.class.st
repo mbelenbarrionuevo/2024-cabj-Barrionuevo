@@ -6,7 +6,6 @@ Class {
 }
 
 { #category : 'action' }
-CardDispenserCell >> applyEffectTo: aSpaceship on: aGame [
-
-	aGame giveOneCardTo: aSpaceship
+CardDispenserCell >> applyBaseEffectTo: aSpaceship on: aGame [
+    aGame giveOneCardTo: aSpaceship
 ]

@@ -44,6 +44,13 @@ Game >> ally: aSpaceshipOrIdOne with: aSpaceshipOrIdTwo [
     anAllyTankManager ally: firstSpaceship with: secondSpaceship
 ]
 
+{ #category : 'accessing' }
+Game >> applyEffectOf: aCell to: aSpaceship [
+    | targets |
+	targets := self resolveTargetsFor: aCell landingSpaceship: aSpaceship.
+	targets do: [ :target | aCell applyBaseEffectTo: target on: self ]
+]
+
 { #category : 'action' }
 Game >> applyHyperGravityOn: arg1 withValue: arg2 [
 
@@ -84,6 +91,15 @@ Game >> checkMoveIsPossible: arg1 for: arg2 [
 			spaceshipsWithHyperGravity removeKey: arg2 ].
 	tmp2 := tmp1 adjustMovementFor: tmp2 withLimits: finishLine.
 	^ tmp2
+]
+
+{ #category : 'action' }
+Game >> effectiveTargetTypeFor: normalTargetType isReversed: isReversed [
+	isReversed ifFalse: [ ^ normalTargetType ].
+	normalTargetType = #single ifTrue: [ ^ #allExceptSingle ].
+	normalTargetType = #allExceptSingle ifTrue: [ ^ #single ].
+	normalTargetType = #all ifTrue: [ ^ #none ].
+	^ normalTargetType
 ]
 
 { #category : 'action' }
@@ -155,11 +171,6 @@ Game >> move: spaceship a: numberOfMovements [
 	self checkAndHandleFuelDepletion: spaceship startingLap: startingLap.
 ]
 
-{ #category : 'results' }
-Game >> moveAllTheSpaceshipsExcept: aSpaceship withValueToMove: aValue [
-	spaceships each: [ :spaceship | self move: spaceship a: aValue ] but: aSpaceship.
-]
-
 { #category : 'action' }
 Game >> moveSpaceship [
 
@@ -198,6 +209,21 @@ Game >> removeTheCard: arg1 andSaveTheLastInstantCardPlayed: arg2 [
 Game >> resetSpaceshipsToCellOne [
 
 	spaceships each: [ :arg1 | arg1 resetToOne ]
+]
+
+{ #category : 'action' }
+Game >> resolveTargetsFor: aCell landingSpaceship: aSpaceship [
+     | cellIndex activeCards isReversed effectiveTargetType allSpaceships |
+	cellIndex := board indexOf: aCell.
+	activeCards := aActiveDeck activeReversePolarityCardsFor: cellIndex.
+	isReversed := activeCards size odd.
+	
+	effectiveTargetType := self effectiveTargetTypeFor: aCell targetType isReversed: isReversed.
+	allSpaceships := spaceships collect: [ :s | s ].
+	effectiveTargetType = #single ifTrue: [ ^ OrderedCollection with: aSpaceship ].
+	effectiveTargetType = #allExceptSingle ifTrue: [ ^ allSpaceships copyWithout: aSpaceship ].
+	effectiveTargetType = #all ifTrue: [ ^ allSpaceships ].
+	^ OrderedCollection new
 ]
 
 { #category : 'results' }

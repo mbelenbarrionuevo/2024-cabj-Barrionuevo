@@ -6,7 +6,6 @@ Class {
 }
 
 { #category : 'action' }
-BlackHoleCell >> applyEffectTo: aSpaceship on: aGame [
-
-	aGame move: aSpaceship a: -4
+BlackHoleCell >> applyBaseEffectTo: aSpaceship on: aGame [
+    aGame move: aSpaceship a: -4
 ]

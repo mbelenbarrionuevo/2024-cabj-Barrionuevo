@@ -16,12 +16,11 @@ WormholeCell class >> in: aPosition to: anotherPosition [
 ]
 
 { #category : 'action' }
-WormholeCell >> applyEffectTo: aSpaceship on: aGame [
-	
-	| numberOfMovements cellOfSpaceship |
-	cellOfSpaceship := aSpaceship position cell.
-	numberOfMovements := positionToGoTo - cellOfSpaceship.
-	aGame move: aSpaceship a: numberOfMovements
+WormholeCell >> applyBaseEffectTo: aSpaceship on: aGame [
+    | numberOfMovements cellOfSpaceship |
+    cellOfSpaceship := aSpaceship position cell.
+    numberOfMovements := positionToGoTo - cellOfSpaceship.
+    aGame move: aSpaceship a: numberOfMovements
 ]
 
 { #category : 'accessing' }

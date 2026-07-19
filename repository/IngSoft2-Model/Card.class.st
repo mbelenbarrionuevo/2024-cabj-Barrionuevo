@@ -33,6 +33,12 @@ Card >> applyEffectOn: throwResult for: spaceshipId [
 	^ throwResult
 ]
 
+{ #category : 'initialization' }
+Card >> cellIndex [
+    ^ nil
+
+]
+
 { #category : 'action' }
 Card >> deactivate [
 
@@ -43,6 +49,12 @@ Card >> deactivate [
 Card >> initializeToDoEffectFor: aSpaceshipId [
 
 	spaceshipAffected := aSpaceshipId
+]
+
+{ #category : 'initialization' }
+Card >> isReversePolarity [
+    ^ false
+
 ]
 
 { #category : 'initialization' }

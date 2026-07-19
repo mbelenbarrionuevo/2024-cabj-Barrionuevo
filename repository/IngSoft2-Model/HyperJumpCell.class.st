@@ -18,13 +18,12 @@ HyperJumpCell class >> withConversor: aConversor andValues: aCollection [
 ]
 
 { #category : 'action' }
-HyperJumpCell >> applyEffectTo: aSpaceship on: aGame [
-
-	| convertionOfNextValue |
-	convertionOfNextValue := conversor convert: currentValue.
-	previousValue := currentValue.
-	self nextValue.
-	aGame move: aSpaceship a: convertionOfNextValue
+HyperJumpCell >> applyBaseEffectTo: aSpaceship on: aGame [
+    | convertionOfNextValue |
+    convertionOfNextValue := conversor convert: currentValue.
+    previousValue := currentValue.
+    self nextValue.
+    aGame move: aSpaceship a: convertionOfNextValue
 ]
 
 { #category : 'initialization' }
