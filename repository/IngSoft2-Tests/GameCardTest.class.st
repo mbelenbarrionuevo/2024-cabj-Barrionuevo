@@ -958,7 +958,7 @@ GameCardTest >> test36SpaceshipCancelsAllyCardThenAllianceStops [
 
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test37SpaceshipPlaysReversePolarityOnBlackHoleThenAllOtherSpaceshipsRetrogress [
-   | aGame result customGameDeck |
+   | aGame result customGameDeck aRewardManager |
 	aLoadedDie := LoadedDie of: #( 3 9 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
@@ -979,6 +979,8 @@ GameCardTest >> test37SpaceshipPlaysReversePolarityOnBlackHoleThenAllOtherSpaces
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck. 
 	
+	aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #( 0.5 )).
+	aGame rewardManager: aRewardManager.
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
 	
 	aGame moveSpaceship.
@@ -993,7 +995,7 @@ GameCardTest >> test37SpaceshipPlaysReversePolarityOnBlackHoleThenAllOtherSpaces
 
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test38SpaceshipPlaysReversePolarityOnMoonWalkThenOnlyLandingSpaceshipMoves [
-	| aGame result customGameDeck |
+	| aGame result customGameDeck aRewardManager |
 	aLoadedDie := LoadedDie of: #( 3 9 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
@@ -1015,7 +1017,8 @@ GameCardTest >> test38SpaceshipPlaysReversePolarityOnMoonWalkThenOnlyLandingSpac
 		         with: aBoardCreator
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
-
+	aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #( 0.5 )).
+	aGame rewardManager: aRewardManager.
 	
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
 
@@ -1033,7 +1036,7 @@ GameCardTest >> test38SpaceshipPlaysReversePolarityOnMoonWalkThenOnlyLandingSpac
 
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test39SpaceshipPlaysReversePolarityOnAtomicBombThenNoSpaceshipIsAffected [
-	| aGame result customGameDeck |
+	| aGame result customGameDeck aRewardManager |
 	aLoadedDie := LoadedDie of: #( 3 9 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
@@ -1053,6 +1056,8 @@ GameCardTest >> test39SpaceshipPlaysReversePolarityOnAtomicBombThenNoSpaceshipIs
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
 	
+	aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #( 0.5 )).
+	aGame rewardManager: aRewardManager.
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
 	
 	aGame moveSpaceship.
@@ -1067,7 +1072,7 @@ GameCardTest >> test39SpaceshipPlaysReversePolarityOnAtomicBombThenNoSpaceshipIs
 
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test40SpaceshipPlaysTwoReversePolarityCardsOnBlackHoleThenNormalEffectApplies [
-	| aGame result customGameDeck |
+	| aGame result customGameDeck aRewardManager |
 	aLoadedDie := LoadedDie of: #( 3 9 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
@@ -1091,7 +1096,9 @@ GameCardTest >> test40SpaceshipPlaysTwoReversePolarityCardsOnBlackHoleThenNormal
 		         with: aBoardCreator
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
-
+	
+	aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #( 0.5 )).
+	aGame rewardManager: aRewardManager.
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
 
@@ -1109,7 +1116,7 @@ GameCardTest >> test40SpaceshipPlaysTwoReversePolarityCardsOnBlackHoleThenNormal
 
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test41SpaceshipPlaysReversePolarityThenCancelsItThenNormalEffectApplies [
-	| aGame result customGameDeck |
+	| aGame result customGameDeck aRewardManager |
 	aLoadedDie := LoadedDie of: #( 3 9 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
@@ -1129,7 +1136,8 @@ GameCardTest >> test41SpaceshipPlaysReversePolarityThenCancelsItThenNormalEffect
 		         with: aBoardCreator
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
-	
+	aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #( 0.5 )).
+	aGame rewardManager: aRewardManager.
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
 	
 	aGame
@@ -1149,7 +1157,7 @@ GameCardTest >> test41SpaceshipPlaysReversePolarityThenCancelsItThenNormalEffect
 
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test42SpaceshipPlaysReversePolarityOnWormholeThenAllOtherSpaceshipsAreMovedToExit [
-	| aGame result customGameDeck aCustomWormholeCreator |
+	| aGame result customGameDeck aCustomWormholeCreator aRewardManager |
 	aLoadedDie := LoadedDie of: #( 3 9 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
@@ -1172,7 +1180,8 @@ GameCardTest >> test42SpaceshipPlaysReversePolarityOnWormholeThenAllOtherSpacesh
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
 
-	
+	aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #( 0.5 )).
+	aGame rewardManager: aRewardManager.
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
 
 	aGame moveSpaceship.
@@ -1189,7 +1198,7 @@ GameCardTest >> test42SpaceshipPlaysReversePolarityOnWormholeThenAllOtherSpacesh
 
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test43SpaceshipPlaysReversePolarityOnCardDispenserThenAllOtherSpaceshipsGainCard [
-	| aGame result customGameDeck |
+	| aGame result customGameDeck aRewardManager |
 	aLoadedDie := LoadedDie of: #( 3 9 2 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
@@ -1209,7 +1218,8 @@ GameCardTest >> test43SpaceshipPlaysReversePolarityOnCardDispenserThenAllOtherSp
 		         with: aBoardCreator
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
-	
+	aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #( 0.5 )).
+	aGame rewardManager: aRewardManager.
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
 	
 	aGame moveSpaceship.
@@ -1229,7 +1239,7 @@ GameCardTest >> test43SpaceshipPlaysReversePolarityOnCardDispenserThenAllOtherSp
 
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test44SpaceshipPlaysReversePolarityOnHyperGravityThenAllOtherSpaceshipsGetHyperGravity [
-	| aGame result customGameDeck |
+	| aGame result customGameDeck aRewardManager |
 	aLoadedDie := LoadedDie of: #( 3 9 2 2 ). 
 	collectionOfCells := OrderedCollection new.
 	30 timesRepeat: [ collectionOfCells add: Cell new ].
@@ -1247,7 +1257,8 @@ GameCardTest >> test44SpaceshipPlaysReversePolarityOnHyperGravityThenAllOtherSpa
 		         with: aBoardCreator
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
-	
+	aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #( 0.5 )).
+	aGame rewardManager: aRewardManager.
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
 	
 	aGame moveSpaceship.
@@ -1263,7 +1274,7 @@ GameCardTest >> test44SpaceshipPlaysReversePolarityOnHyperGravityThenAllOtherSpa
 
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test45SpaceshipPlaysReversePolarityOnHyperJumpThenAllOtherSpaceshipsJump [
-	| aGame result customGameDeck aConversor |
+	| aGame result customGameDeck aConversor aRewardManager |
 	aLoadedDie := LoadedDie of: #( 3 9 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
@@ -1283,7 +1294,8 @@ GameCardTest >> test45SpaceshipPlaysReversePolarityOnHyperJumpThenAllOtherSpaces
 		         with: aBoardCreator
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
-	
+	aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #( 0.5 )).
+	aGame rewardManager: aRewardManager.
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
 
 	aGame moveSpaceship.
@@ -1294,4 +1306,137 @@ GameCardTest >> test45SpaceshipPlaysReversePolarityOnHyperJumpThenAllOtherSpaces
 	result at: 1 put: 6.
 	result at: 2 put: 15.
 	self assert: aGame spaceships cellsOfSpaceships equals: result
+]
+
+{ #category : 'spaceshipCardHand' }
+GameCardTest >> test46SpaceshipLaunchesWithThreeTurbines [
+	| spaceship |
+	spaceship := Spaceship launchWithFuel: 10.
+	self assert: spaceship turbines equals: 3.
+	self assert: spaceship hasTurbines
+]
+
+{ #category : 'spaceshipCardHand' }
+GameCardTest >> test47SpaceshipEntersBlackHoleLosesOneTurbine [
+	| aGame customGameDeck aRewardManager |
+	aLoadedDie := LoadedDie of: #( 5 ). "Nave 1 va al casillero 6 (BlackHoleCell)"
+	
+	collectionOfCells := OrderedCollection new.
+	30 timesRepeat: [ collectionOfCells add: Cell new ].
+	collectionOfCells at: 6 put: BlackHoleCell new.
+	aBoardCreator := BoardCreator
+		                 with: collectionOfCells
+		                 ofLaps: 1
+		                 withWormholeCreator: aWormholeCreator.
+	customGameDeck := LoadedEffectManager manage: (OrderedCollection
+		                  with: AccelerationCard).
+	aGame := Game
+		         numberOfSpaceships: 2
+		         with: aBoardCreator
+		         playWith: aLoadedDie
+		         andGameDeck: customGameDeck.
+	aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #( 0.5 )).
+	aGame rewardManager: aRewardManager.
+	
+	aGame moveSpaceship. 
+	self assert: (aGame spaceships resolve: 1) turbines equals: 2
+]
+
+{ #category : 'spaceshipCardHand' }
+GameCardTest >> test48SpaceshipFailsToExitHyperGravityLosesOneTurbine [
+	| aGame customGameDeck aRewardManager |
+	aLoadedDie := LoadedDie of: #( 5 9 2 ). "Turno 1: N1 va al 6 (HyperGravity 4), Turno 2: N2 va al 10, Turno 3: N1 saca 2 (<4)"
+	
+	collectionOfCells := OrderedCollection new.
+	30 timesRepeat: [ collectionOfCells add: Cell new ].
+	collectionOfCells at: 6 put: (HyperGravityCell withValueToMove: 4).
+	aBoardCreator := BoardCreator
+		                 with: collectionOfCells
+		                 ofLaps: 1
+		                 withWormholeCreator: aWormholeCreator.
+	customGameDeck := LoadedEffectManager manage: (OrderedCollection
+		                  with: AccelerationCard).
+	aGame := Game
+		         numberOfSpaceships: 2
+		         with: aBoardCreator
+		         playWith: aLoadedDie
+		         andGameDeck: customGameDeck.
+	aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #( 0.5 )).
+	aGame rewardManager: aRewardManager.
+	
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	aGame moveSpaceship.
+	
+	self assert: (aGame spaceships resolve: 1) turbines equals: 2
+]
+
+{ #category : 'spaceshipCardHand' }
+GameCardTest >> test49SpaceshipRunsOutOfFuelLosesOneTurbine [
+	| aGame customGameDeck  spaceshipOne aRewardManager |
+	aLoadedDie := LoadedDie of: #( 9 ). 
+	
+	collectionOfCells := OrderedCollection new.
+	30 timesRepeat: [ collectionOfCells add: Cell new ].
+	aBoardCreator := BoardCreator
+		                 with: collectionOfCells
+		                 ofLaps: 1
+		                 withWormholeCreator: aWormholeCreator.
+	customGameDeck := LoadedEffectManager manage: (OrderedCollection
+		                  with: AccelerationCard).
+	aGame := Game
+		         numberOfSpaceships: 2
+		         with: aBoardCreator
+		         playWith: aLoadedDie
+		         andGameDeck: customGameDeck.
+	
+	spaceshipOne := aGame spaceships resolve: 1.
+	spaceshipOne fuelTank useFuel: (spaceshipOne amountOfFuel - 2).
+	aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #( 0.5 )).
+	aGame rewardManager: aRewardManager.
+	aGame moveSpaceship. 
+	
+	self assert: spaceshipOne turbines equals: 2
+]
+
+{ #category : 'spaceshipCardHand' }
+GameCardTest >> test50SpaceshipLosesAllTurbinesIsEliminatedAndSkipped [
+	| aGame customGameDeck aRewardManager spaceshipOne spaceshipTwo |
+	aLoadedDie := LoadedDie of: #( 5 9 4 9 4 ). "Nave 1 cae 3 veces seguidas en el BlackHole"
+	
+	collectionOfCells := OrderedCollection new.
+	30 timesRepeat: [ collectionOfCells add: Cell new ].
+	collectionOfCells at: 6 put: BlackHoleCell new.
+
+	aBoardCreator := BoardCreator
+		                 with: collectionOfCells
+		                 ofLaps: 1
+		                 withWormholeCreator: aWormholeCreator.
+
+	customGameDeck := LoadedEffectManager manage: (OrderedCollection
+		                  with: AccelerationCard).
+
+	aGame := Game
+		         numberOfSpaceships: 2
+		         with: aBoardCreator
+		         playWith: aLoadedDie
+		         andGameDeck: customGameDeck.
+	aRewardManager := RewardManager withRandomProvider: (LoadedRandomProvider with: #( 0.5 )).
+	aGame rewardManager: aRewardManager.
+	spaceshipOne := aGame spaceships resolve: 1.
+	spaceshipTwo := aGame spaceships resolve: 2.
+
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+
+	self assert: spaceshipOne turbines equals: 0.
+	self deny: spaceshipOne hasTurbines.
+
+	
+	aGame moveSpaceship.
+	self assert: (aGame spaceships resolve: 2) equals: spaceshipTwo
+
 ]

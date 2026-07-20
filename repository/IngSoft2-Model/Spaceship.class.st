@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'id',
 		'aFuelTank',
-		'objectPosition'
+		'objectPosition',
+		'turbines'
 	],
 	#classInstVars : [
 		'counterId'
@@ -20,26 +21,21 @@ Spaceship class >> initialize [
 ]
 
 { #category : 'instance creation' }
-Spaceship class >> launchWithFuel: anAmountOfFuel [
+Spaceship class >> launchWithFuel: arg1 [
+
 	counterId := counterId + 1.
-	^ self new initializeLaunch: counterId withFuel: anAmountOfFuel .
+	^ self new initializeLaunch: counterId withFuel: arg1
 ]
 
 { #category : 'comparing' }
-Spaceship >> > aSpaceship [
+Spaceship >> > arg1 [
 
-	| completedLaps aSpaceshipCompletedLaps cellPosition aSpaceshipCellPosition |
-	completedLaps := objectPosition lap - 1.
-	aSpaceshipCompletedLaps := aSpaceship position lap -1.
-	cellPosition := objectPosition cell.
-	aSpaceshipCellPosition := aSpaceship position cell.
-
-	^ completedLaps > aSpaceshipCompletedLaps
-		  ifTrue: [ true ]
-		  ifFalse: [
-			  completedLaps = aSpaceshipCompletedLaps
-				  ifTrue: [ cellPosition > aSpaceshipCellPosition ]
-				  ifFalse: [ false ] ]
+	| tmp1 tmp2 tmp3 tmp4 |
+	tmp1 := objectPosition lap - 1.
+	tmp2 := arg1 position lap - 1.
+	tmp3 := objectPosition cell.
+	tmp4 := arg1 position cell.
+	^ tmp1 > tmp2 or: [ tmp1 = tmp2 and: [ tmp3 > tmp4 ] ]
 ]
 
 { #category : 'set and get' }
@@ -49,15 +45,21 @@ Spaceship >> amountOfFuel [
 ]
 
 { #category : 'action' }
-Spaceship >> changeCapacity: aNumber [
+Spaceship >> changeCapacity: arg1 [
 
-	aFuelTank changeCapacity: aNumber
+	aFuelTank changeCapacity: arg1
 ]
 
 { #category : 'set and get' }
 Spaceship >> fuelTank [
 
 	^ aFuelTank
+]
+
+{ #category : 'action' }
+Spaceship >> hasTurbines [
+    ^ turbines > 0
+
 ]
 
 { #category : 'accessing' }
@@ -67,11 +69,12 @@ Spaceship >> id [
 ]
 
 { #category : 'initialization' }
-Spaceship >> initializeLaunch: counterId withFuel: anAmountOfFuel [
+Spaceship >> initializeLaunch: arg1 withFuel: arg2 [
 
 	objectPosition := Position startGame.
-	aFuelTank := FuelTank fullWith: anAmountOfFuel.
-	id := counterId.
+	aFuelTank := FuelTank fullWith: arg2.
+	id := arg1.
+	turbines := 3.
 ]
 
 { #category : 'setter' }
@@ -81,16 +84,21 @@ Spaceship >> loadFuel [
 ]
 
 { #category : 'action' }
-Spaceship >> move: aNumberOfMovements [
+Spaceship >> loseTurbine [
+    turbines := turbines - 1
 
-	| aux |
-	aux := aNumberOfMovements.
-	aNumberOfMovements > aFuelTank loadedWith ifTrue: [
-		aux := aFuelTank loadedWith ].
 
-	objectPosition updateCell: aux.
 
-	aFuelTank useFuel: aux abs
+]
+
+{ #category : 'action' }
+Spaceship >> move: arg1 [
+
+	| tmp1 |
+	tmp1 := arg1.
+	arg1 > aFuelTank loadedWith ifTrue: [ tmp1 := aFuelTank loadedWith ].
+	objectPosition updateCell: tmp1.
+	aFuelTank useFuel: tmp1 abs
 ]
 
 { #category : 'set and get' }
@@ -115,4 +123,10 @@ Spaceship >> resetToCell: aCellNumber andLap: aLapNumber [
 Spaceship >> resetToOne [
 
 	self resetToCell: 1 andLap: objectPosition lap.
+]
+
+{ #category : 'accessing' }
+Spaceship >> turbines [
+    ^ turbines
+
 ]

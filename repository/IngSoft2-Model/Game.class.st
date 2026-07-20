@@ -65,6 +65,7 @@ Game >> checkAndHandleFuelDepletion: aSpaceship startingLap: aStartingLap [
     spaceshipsWithoutFuel isEmpty ifTrue: [ ^ self ].
     
     (spaceshipsWithoutFuel includes: aSpaceship) ifTrue: [
+        aSpaceship loseTurbine.
         turnManager lostTurns: 2 by: aSpaceship.
         aSpaceship resetToCell: 1 andLap: aStartingLap.
         aSpaceship loadFuel.
@@ -72,6 +73,7 @@ Game >> checkAndHandleFuelDepletion: aSpaceship startingLap: aStartingLap [
     
     alliesWithoutFuel := spaceshipsWithoutFuel copyWithout: aSpaceship.
     alliesWithoutFuel do: [ :ally |
+        ally loseTurbine.
         turnManager lostTurns: 2 by: ally.
         ally resetToOne.
         ally loadFuel.
@@ -82,15 +84,16 @@ Game >> checkAndHandleFuelDepletion: aSpaceship startingLap: aStartingLap [
 Game >> checkMoveIsPossible: arg1 for: arg2 [
 
 	| tmp1 tmp2 |
-	tmp2 := arg1.
-	tmp1 := arg2 position.
-	(spaceshipsWithHyperGravity includesKey: arg2) ifTrue: [
-			arg1 < (spaceshipsWithHyperGravity at: arg2) ifTrue: [
-					tmp2 := 0.
-					^ tmp2 ].
-			spaceshipsWithHyperGravity removeKey: arg2 ].
-	tmp2 := tmp1 adjustMovementFor: tmp2 withLimits: finishLine.
-	^ tmp2
+    tmp2 := arg1.
+    tmp1 := arg2 position.
+    (spaceshipsWithHyperGravity includesKey: arg2) ifTrue: [
+            arg1 < (spaceshipsWithHyperGravity at: arg2) ifTrue: [
+                    arg2 loseTurbine.
+                    tmp2 := 0.
+                    ^ tmp2 ].
+            spaceshipsWithHyperGravity removeKey: arg2 ].
+    tmp2 := tmp1 adjustMovementFor: tmp2 withLimits: finishLine.
+    ^ tmp2
 ]
 
 { #category : 'action' }

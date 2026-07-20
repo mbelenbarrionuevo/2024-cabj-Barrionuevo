@@ -7,5 +7,6 @@ Class {
 
 { #category : 'action' }
 BlackHoleCell >> applyBaseEffectTo: aSpaceship on: aGame [
+    aSpaceship loseTurbine.
     aGame move: aSpaceship a: -4
 ]

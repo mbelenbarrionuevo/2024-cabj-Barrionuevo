@@ -56,8 +56,8 @@ TurnManager >> nextSpaceship [
 TurnManager >> nextTurn [
 
 	self nextSpaceship.
-	[ (turnsToSkip at: currentSpaceship) > 0 ] whileTrue: [
-		self decrementTurnsOfSpaceship.
+	[ (turnsToSkip at: currentSpaceship) > 0 or: [ currentSpaceship hasTurbines not ] ] whileTrue: [
+		currentSpaceship hasTurbines ifTrue: [ self decrementTurnsOfSpaceship ].
 		self nextSpaceship ]
 ]
 
