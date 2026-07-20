@@ -969,7 +969,7 @@ GameCardTest >> test37SpaceshipPlaysReversePolarityOnBlackHoleThenAllOtherSpaces
 		                 with: collectionOfCells
 		                 ofLaps: 1
 		                 withWormholeCreator: aWormholeCreator.
-	"Creamos un mazo cargado únicamente con cartas ReversePolarityCard"
+	
 	customGameDeck := LoadedEffectManager manage: (OrderedCollection
 		                  with: ReversePolarityCard
 		                  with: ReversePolarityCard).
@@ -977,19 +977,16 @@ GameCardTest >> test37SpaceshipPlaysReversePolarityOnBlackHoleThenAllOtherSpaces
 		         numberOfSpaceships: 2
 		         with: aBoardCreator
 		         playWith: aLoadedDie
-		         andGameDeck: customGameDeck. "<- Usamos el mazo personalizado"
-	"Jugamos la carta ReversePolarityCard sobre el casillero 6"
+		         andGameDeck: customGameDeck. 
+	
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
-	"Turno 1: Nave 1 saca 3 -> va al casillero 4"
+	
 	aGame moveSpaceship.
-	"Turno 2: Nave 2 saca 9 -> va al casillero 10"
 	aGame moveSpaceship.
-	"Turno 3: Nave 1 saca 2 -> cae en el casillero 6 (BlackHoleCell)"
 	aGame moveSpaceship.
+	
 	result := Dictionary new.
-	"Nave 1 cae en el BlackHoleCell pero con la polaridad invertida -> se queda en el 6"
 	result at: 1 put: 6.
-	"Nave 2 es la afectada por el BlackHoleCell -> retrocede 4 casilleros desde el 10 -> celda 6"
 	result at: 2 put: 6.
 	self assert: aGame spaceships cellsOfSpaceships equals: result
 ]
@@ -997,11 +994,11 @@ GameCardTest >> test37SpaceshipPlaysReversePolarityOnBlackHoleThenAllOtherSpaces
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test38SpaceshipPlaysReversePolarityOnMoonWalkThenOnlyLandingSpaceshipMoves [
 	| aGame result customGameDeck |
-	aLoadedDie := LoadedDie of: #( 3 9 2 ). "Secuencia para mover ambas naves"
+	aLoadedDie := LoadedDie of: #( 3 9 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
 	30 timesRepeat: [ collectionOfCells add: Cell new ].
-	"Ponemos un MoonWalkCell de valor 2 en el casillero 6"
+	
 	collectionOfCells at: 6 put: (MoonWalkCell withValueToMove: 2).
 
 	aBoardCreator := BoardCreator
@@ -1019,21 +1016,15 @@ GameCardTest >> test38SpaceshipPlaysReversePolarityOnMoonWalkThenOnlyLandingSpac
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
 
-	"Jugamos la carta ReversePolarityCard sobre el casillero 6"
+	
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
 
-	"Turno 1: Nave 1 saca 3 -> va al casillero 4"
 	aGame moveSpaceship.
-	"Turno 2: Nave 2 saca 9 -> va al casillero 10"
 	aGame moveSpaceship.
-	"Turno 3: Nave 1 saca 2 -> cae en el casillero 6 (MoonWalkCell)"
 	aGame moveSpaceship.
 
 	result := Dictionary new.
-	"Como la polaridad está invertida, la Nave 1 es la única que retrocede (el efecto de MoonWalk)"
-	"Estaba en la celda 6, retrocede 2 casilleros -> termina en la celda 4"
 	result at: 1 put: 4.
-	"La Nave 2 no es afectada, se queda en la celda 10"
 	result at: 2 put: 10.
 
 	self assert: aGame spaceships cellsOfSpaceships equals: result
@@ -1043,11 +1034,11 @@ GameCardTest >> test38SpaceshipPlaysReversePolarityOnMoonWalkThenOnlyLandingSpac
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test39SpaceshipPlaysReversePolarityOnAtomicBombThenNoSpaceshipIsAffected [
 	| aGame result customGameDeck |
-	aLoadedDie := LoadedDie of: #( 3 9 2 ). "Nave 1 va al 4, Nave 2 va al 10, Nave 1 va al 6"
+	aLoadedDie := LoadedDie of: #( 3 9 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
 	30 timesRepeat: [ collectionOfCells add: Cell new ].
-	"Ponemos un AtomicBombCell en el casillero 6"
+	
 	collectionOfCells at: 6 put: AtomicBombCell new.
 	aBoardCreator := BoardCreator
 		                 with: collectionOfCells
@@ -1061,17 +1052,14 @@ GameCardTest >> test39SpaceshipPlaysReversePolarityOnAtomicBombThenNoSpaceshipIs
 		         with: aBoardCreator
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
-	"Jugamos la carta ReversePolarityCard sobre el casillero 6"
+	
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
-	"Turno 1: Nave 1 va al 4"
+	
 	aGame moveSpaceship.
-	"Turno 2: Nave 2 va al 10"
 	aGame moveSpaceship.
-	"Turno 3: Nave 1 cae en el casillero 6 (AtomicBombCell)"
 	aGame moveSpaceship.
+	
 	result := Dictionary new.
-	"Como la polaridad está invertida, la bomba atómica no afecta a NINGUNA nave"
-	"Ambas se quedan exactamente donde estaban (Nave 1 en 6, Nave 2 en 10)"
 	result at: 1 put: 6.
 	result at: 2 put: 10.
 	self assert: aGame spaceships cellsOfSpaceships equals: result
@@ -1080,7 +1068,7 @@ GameCardTest >> test39SpaceshipPlaysReversePolarityOnAtomicBombThenNoSpaceshipIs
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test40SpaceshipPlaysTwoReversePolarityCardsOnBlackHoleThenNormalEffectApplies [
 	| aGame result customGameDeck |
-	aLoadedDie := LoadedDie of: #( 3 9 2 ). "Nave 1 va al 4, Nave 2 va al 10, Nave 1 va al 6"
+	aLoadedDie := LoadedDie of: #( 3 9 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
 	30 timesRepeat: [ collectionOfCells add: Cell new ].
@@ -1091,7 +1079,7 @@ GameCardTest >> test40SpaceshipPlaysTwoReversePolarityCardsOnBlackHoleThenNormal
 		                 ofLaps: 1
 		                 withWormholeCreator: aWormholeCreator.
 
-	"Necesitamos al menos 3 cartas para que la Nave 1 pueda jugar dos de ellas"
+	
 	customGameDeck := LoadedEffectManager manage: (OrderedCollection
 		                  with: ReversePolarityCard
 		                  with: ReversePolarityCard
@@ -1104,22 +1092,15 @@ GameCardTest >> test40SpaceshipPlaysTwoReversePolarityCardsOnBlackHoleThenNormal
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
 
-	"Jugamos DOS cartas ReversePolarityCard sobre el casillero 6"
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
 
-	"Turno 1: Nave 1 saca 3 -> va al casillero 4"
 	aGame moveSpaceship.
-	"Turno 2: Nave 2 saca 9 -> va al casillero 10"
 	aGame moveSpaceship.
-	"Turno 3: Nave 1 saca 2 -> cae en el casillero 6 (BlackHoleCell)"
 	aGame moveSpaceship.
 
 	result := Dictionary new.
-	"Como hay 2 cartas (par), la polaridad se anula -> actúa el efecto normal"
-	"Nave 1 es la afectada por el BlackHoleCell -> retrocede 4 casilleros desde el 6 -> celda 2"
 	result at: 1 put: 2.
-	"Nave 2 no es afectada -> se queda en la celda 10"
 	result at: 2 put: 10.
 
 	self assert: aGame spaceships cellsOfSpaceships equals: result
@@ -1128,69 +1109,52 @@ GameCardTest >> test40SpaceshipPlaysTwoReversePolarityCardsOnBlackHoleThenNormal
 
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test41SpaceshipPlaysReversePolarityThenCancelsItThenNormalEffectApplies [
-	| aGame result customGameDeck activeDeck cards reversePolarityCardInstance |
-	aLoadedDie := LoadedDie of: #( 3 9 2 ). "Nave 1 va al 4, Nave 2 va al 10, Nave 1 va al 6"
+	| aGame result customGameDeck |
+	aLoadedDie := LoadedDie of: #( 3 9 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
 	30 timesRepeat: [ collectionOfCells add: Cell new ].
 	collectionOfCells at: 6 put: BlackHoleCell new.
-
 	aBoardCreator := BoardCreator
 		                 with: collectionOfCells
 		                 ofLaps: 1
 		                 withWormholeCreator: aWormholeCreator.
-
-	"Cargamos la mano de Nave 1 con ReversePolarityCard y CancellationCard"
+	
 	customGameDeck := LoadedEffectManager manage: (OrderedCollection
 		                  with: ReversePolarityCard
 		                  with: CancellationCard
 		                  with: ReversePolarityCard).
-
 	aGame := Game
 		         numberOfSpaceships: 2
 		         with: aBoardCreator
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
-
-	"Jugamos la carta de polaridad sobre el casillero 6"
+	
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
-
-	"Buscamos la instancia que se activó en el ActiveDeck para poder cancelarla"
-	activeDeck := aGame instVarNamed: #aActiveDeck.
-	cards := activeDeck instVarNamed: #cards.
-	reversePolarityCardInstance := cards detect: [ :card | card isReversePolarity ].
-
-	"Nave 1 juega CancellationCard sobre la carta activa de polaridad"
-	aGame spaceshipId: 1 useInstantCard: CancellationCard toDoEffectFor: reversePolarityCardInstance.
-
-	"Turno 1: Nave 1 saca 3 -> va al casillero 4"
+	
+	aGame
+		spaceshipId: 1
+		useInstantCard: CancellationCard
+		toDoEffectFor: (ReversePolarityCard toDoEffectFor: 6).
+	
 	aGame moveSpaceship.
-	"Turno 2: Nave 2 saca 9 -> va al casillero 10"
 	aGame moveSpaceship.
-	"Turno 3: Nave 1 saca 2 -> cae en el casillero 6 (BlackHoleCell)"
 	aGame moveSpaceship.
-
+	
 	result := Dictionary new.
-	"Como la carta fue cancelada -> actúa el efecto normal del BlackHoleCell"
-	"Nave 1 retrocede 4 casilleros -> termina en la celda 2"
 	result at: 1 put: 2.
-	"Nave 2 no es afectada -> se queda en la celda 10"
 	result at: 2 put: 10.
-
 	self assert: aGame spaceships cellsOfSpaceships equals: result
-
-
 ]
 
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test42SpaceshipPlaysReversePolarityOnWormholeThenAllOtherSpaceshipsAreMovedToExit [
 	| aGame result customGameDeck aCustomWormholeCreator |
-	aLoadedDie := LoadedDie of: #( 3 9 2 ). "Nave 1 va al 4, Nave 2 va al 10, Nave 1 va al 6"
+	aLoadedDie := LoadedDie of: #( 3 9 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
 	30 timesRepeat: [ collectionOfCells add: Cell new ].
 	
-	"Creamos un Wormhole con entrada en 6 y salida en 12"
 	aCustomWormholeCreator := WormholeCreator withBeginning: 6 andEnd: 12.
 
 	aBoardCreator := BoardCreator
@@ -1208,20 +1172,15 @@ GameCardTest >> test42SpaceshipPlaysReversePolarityOnWormholeThenAllOtherSpacesh
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
 
-	"Jugamos la carta ReversePolarityCard sobre el casillero 6 (la entrada del Wormhole)"
+	
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
 
-	"Turno 1: Nave 1 va al 4"
 	aGame moveSpaceship.
-	"Turno 2: Nave 2 va al 10"
 	aGame moveSpaceship.
-	"Turno 3: Nave 1 cae en el casillero 6 (Wormhole)"
 	aGame moveSpaceship.
 
 	result := Dictionary new.
-	"Como la polaridad está invertida, la Nave 1 que cayó en el Wormhole NO se mueve (se queda en 6)"
 	result at: 1 put: 6.
-	"La Nave 2 (que estaba en 10) es teletransportada al casillero de salida del Wormhole (casillero 12)"
 	result at: 2 put: 12.
 
 	self assert: aGame spaceships cellsOfSpaceships equals: result
@@ -1231,7 +1190,7 @@ GameCardTest >> test42SpaceshipPlaysReversePolarityOnWormholeThenAllOtherSpacesh
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test43SpaceshipPlaysReversePolarityOnCardDispenserThenAllOtherSpaceshipsGainCard [
 	| aGame result customGameDeck |
-	aLoadedDie := LoadedDie of: #( 3 9 2 2 ). "Turno 1: N1->4, Turno 2: N2->10, Turno 3: N1->6, Turno 4: N2->12"
+	aLoadedDie := LoadedDie of: #( 3 9 2 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
 	30 timesRepeat: [ collectionOfCells add: Cell new ].
@@ -1250,23 +1209,19 @@ GameCardTest >> test43SpaceshipPlaysReversePolarityOnCardDispenserThenAllOtherSp
 		         with: aBoardCreator
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
-	"Nave 1 juega polaridad en cell 6"
+	
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
-	"Turno 1: Nave 1 va al 4"
+	
 	aGame moveSpaceship.
-	"Turno 2: Nave 2 va al 10"
 	aGame moveSpaceship.
-	"Turno 3: Nave 1 va al 6 (CardDispenser). Al estar invertido, Nave 2 gana una ReversePolarityCard."
 	aGame moveSpaceship.
-	"Ahora es el turno de la Nave 2. Como ganó la carta, tiene 2 ReversePolarityCard en su mano."
-	"Juega la primera en cell 8 y la segunda en cell 12."
+	
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 8.
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 12.
-	"Turno 4: Nave 2 saca 2 -> cae en cell 12 (BlackHoleCell)"
+	
 	aGame moveSpaceship.
 	result := Dictionary new.
-	"Si la celda 12 está invertida (porque Nave 2 jugó la carta que ganó):"
-	"Nave 2 se queda en 12. Nave 1 (que estaba en 6) retrocede 4 -> celda 2."
+	
 	result at: 1 put: 2.
 	result at: 2 put: 12.
 	self assert: aGame spaceships cellsOfSpaceships equals: result
@@ -1275,11 +1230,10 @@ GameCardTest >> test43SpaceshipPlaysReversePolarityOnCardDispenserThenAllOtherSp
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test44SpaceshipPlaysReversePolarityOnHyperGravityThenAllOtherSpaceshipsGetHyperGravity [
 	| aGame result customGameDeck |
-	aLoadedDie := LoadedDie of: #( 3 9 2 2 ). "Turno 1: N1->4, Turno 2: N2->10, Turno 3: N1->6, Turno 4: N2->12"
-	
+	aLoadedDie := LoadedDie of: #( 3 9 2 2 ). 
 	collectionOfCells := OrderedCollection new.
 	30 timesRepeat: [ collectionOfCells add: Cell new ].
-	"Ponemos un HyperGravityCell con gravedad de valor 4 en el casillero 6"
+	
 	collectionOfCells at: 6 put: (HyperGravityCell withValueToMove: 4).
 	aBoardCreator := BoardCreator
 		                 with: collectionOfCells
@@ -1293,16 +1247,14 @@ GameCardTest >> test44SpaceshipPlaysReversePolarityOnHyperGravityThenAllOtherSpa
 		         with: aBoardCreator
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
-	"Jugamos la carta de polaridad sobre el casillero 6"
+	
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
-	"Turno 1: Nave 1 va al 4"
+	
 	aGame moveSpaceship.
-	"Turno 2: Nave 2 va al 10"
 	aGame moveSpaceship.
-	"Turno 3: Nave 1 cae en el casillero 6. Al estar invertido, Nave 2 recibe la gravedad de 4."
 	aGame moveSpaceship.
-	"Turno 4: Nave 2 saca 2 -> como tiene gravedad de 4, y 2 < 4, no puede moverse. Se queda en 10."
 	aGame moveSpaceship.
+	
 	result := Dictionary new.
 	result at: 1 put: 6.
 	result at: 2 put: 10.
@@ -1312,12 +1264,11 @@ GameCardTest >> test44SpaceshipPlaysReversePolarityOnHyperGravityThenAllOtherSpa
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test45SpaceshipPlaysReversePolarityOnHyperJumpThenAllOtherSpaceshipsJump [
 	| aGame result customGameDeck aConversor |
-	aLoadedDie := LoadedDie of: #( 3 9 2 ). "Nave 1 va al 4, Nave 2 va al 10, Nave 1 va al 6"
+	aLoadedDie := LoadedDie of: #( 3 9 2 ). 
 	
 	collectionOfCells := OrderedCollection new.
 	30 timesRepeat: [ collectionOfCells add: Cell new ].
 	
-	"Creamos un conversor con ratio 1 y salto de 5 casilleros"
 	aConversor := Conversor totalCells: 30 convertionValue: 30.
 	collectionOfCells at: 6 put: (HyperJumpCell withConversor: aConversor andValues: (OrderedCollection with: (Parsecs ofValue: 5))).
 	aBoardCreator := BoardCreator
@@ -1332,18 +1283,15 @@ GameCardTest >> test45SpaceshipPlaysReversePolarityOnHyperJumpThenAllOtherSpaces
 		         with: aBoardCreator
 		         playWith: aLoadedDie
 		         andGameDeck: customGameDeck.
-	"Jugamos la carta de polaridad sobre el casillero 6"
+	
 	aGame usePermanentCard: ReversePolarityCard toDoEffectFor: 6.
-	"Turno 1: Nave 1 va al 4"
+
 	aGame moveSpaceship.
-	"Turno 2: Nave 2 va al 10"
 	aGame moveSpaceship.
-	"Turno 3: Nave 1 cae en el casillero 6 (HyperJumpCell)"
 	aGame moveSpaceship.
 	result := Dictionary new.
-	"Como la polaridad está invertida, la Nave 1 no salta (se queda en 6)"
+	
 	result at: 1 put: 6.
-	"La Nave 2 salta 5 casilleros -> de 10 pasa a 15"
 	result at: 2 put: 15.
 	self assert: aGame spaceships cellsOfSpaceships equals: result
 ]
