@@ -17,11 +17,6 @@ Cell >> applyEffectTo: aSpaceship on: aGame [
 ]
 
 { #category : 'action' }
-Cell >> isCell [
-    ^ true
-]
-
-{ #category : 'action' }
 Cell >> targetType [
     ^ #single
 ]
