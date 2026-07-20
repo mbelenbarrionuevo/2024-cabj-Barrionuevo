@@ -40,11 +40,11 @@ CollectionOfSpaceships >> collect: aBlock [
 CollectionOfSpaceships >> collectSpaceships: anAmountOfSpaceships [
 
 	| aSpaceship |
+	Spaceship initialize. 
 	spaceships := OrderedCollection new.
 	anAmountOfSpaceships timesRepeat: [
 		aSpaceship := Spaceship launchWithFuel: fuel.
-		spaceships add: aSpaceship ].
-	Spaceship initialize
+		spaceships add: aSpaceship ]
 ]
 
 { #category : 'collection' }
