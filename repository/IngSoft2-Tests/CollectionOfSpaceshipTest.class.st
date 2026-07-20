@@ -51,3 +51,16 @@ CollectionOfSpaceshipTest >> test03PositionsOfSpaceshipsThenReturnEachPositionFo
 		assert: aCollectionOfSpaceships positionsOfSpaceships
 		equals: result
 ]
+
+{ #category : 'tests' }
+CollectionOfSpaceshipTest >> test04WhenCellEffectAppliesToAllSpaceshipsExceptLandingOneThenOnlyOtherSpaceshipsAreEvaluated [
+
+	| aCollectionOfSpaceships landingSpaceship evaluatedCount |
+	aCollectionOfSpaceships := CollectionOfSpaceships
+		                           numberOfSpaceships: 2
+		                           withAmountOfFuel: 10.
+	landingSpaceship := aCollectionOfSpaceships resolve: 1.
+	evaluatedCount := 0.
+	aCollectionOfSpaceships each: [ :spaceship | evaluatedCount := evaluatedCount + 1 ] but: landingSpaceship.
+	self assert: evaluatedCount equals: 1
+]

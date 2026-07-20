@@ -1263,6 +1263,13 @@ GameCardTest >> test46SpaceshipLaunchesWithThreeTurbines [
 	| spaceship |
 	spaceship := Spaceship launchWithFuel: 10.
 	self assert: spaceship turbines equals: 3.
+	
+]
+
+{ #category : 'spaceshipCardHand' }
+GameCardTest >> test46bNewlyLaunchedSpaceshipIsActiveAndHasTurbines [
+	| spaceship |
+	spaceship := Spaceship launchWithFuel: 10.
 	self assert: spaceship hasTurbines
 ]
 
@@ -1288,9 +1295,8 @@ GameCardTest >> test47SpaceshipEntersBlackHoleLosesOneTurbine [
 
 { #category : 'spaceshipCardHand' }
 GameCardTest >> test48SpaceshipFailsToExitHyperGravityLosesOneTurbine [
-	| aGame customGameDeck aRewardManager |
-	aLoadedDie := LoadedDie of: #( 5 9 2 ). "Turno 1: N1 va al 6 (HyperGravity 4), Turno 2: N2 va al 10, Turno 3: N1 saca 2 (<4)"
-	
+	| aGame customGameDeck |
+	aLoadedDie := LoadedDie of: #( 5 9 2 ). 
 	collectionOfCells := OrderedCollection new.
 	30 timesRepeat: [ collectionOfCells add: Cell new ].
 	collectionOfCells at: 6 put: (HyperGravityCell withValueToMove: 4).
@@ -1333,7 +1339,31 @@ GameCardTest >> test49SpaceshipRunsOutOfFuelLosesOneTurbine [
 ]
 
 { #category : 'spaceshipCardHand' }
-GameCardTest >> test50SpaceshipLosesAllTurbinesIsEliminatedAndSkipped [
+GameCardTest >> test50SpaceshipLosesAllTurbinesIsEliminated [
+	| aGame customGameDeck spaceshipOne |
+	aLoadedDie := LoadedDie of: #( 5 9 4 9 4 ). 
+	
+	collectionOfCells := OrderedCollection new.
+	30 timesRepeat: [ collectionOfCells add: Cell new ].
+	collectionOfCells at: 6 put: BlackHoleCell new.
+	aBoardCreator := BoardCreator
+		                 with: collectionOfCells
+		                 ofLaps: 1
+		                 withWormholeCreator: aWormholeCreator.
+	customGameDeck := LoadedEffectManager manage: (OrderedCollection
+		                  with: AccelerationCard).
+	aGame := self createGameFor: 2 withDice: aLoadedDie deck: customGameDeck.
+	spaceshipOne := aGame spaceships resolve: 1.
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	aGame moveSpaceship. 
+	self deny: spaceshipOne hasTurbines
+]
+
+{ #category : 'spaceshipCardHand' }
+GameCardTest >> test51EliminatedSpaceshipIsSkippedInTurnRotation [
 	| aGame customGameDeck spaceshipOne spaceshipTwo |
 	aLoadedDie := LoadedDie of: #( 5 9 4 9 4 ). 
 	
@@ -1348,7 +1378,7 @@ GameCardTest >> test50SpaceshipLosesAllTurbinesIsEliminatedAndSkipped [
 
 	customGameDeck := LoadedEffectManager manage: (OrderedCollection
 		                  with: AccelerationCard).
-	aGame := self createGameFor: 2 withDice: aLoadedDie deck: customGameDeck .
+	aGame := self createGameFor: 2 withDice: aLoadedDie deck: customGameDeck.
 	spaceshipOne := aGame spaceships resolve: 1.
 	spaceshipTwo := aGame spaceships resolve: 2.
 
@@ -1357,12 +1387,8 @@ GameCardTest >> test50SpaceshipLosesAllTurbinesIsEliminatedAndSkipped [
 	aGame moveSpaceship. 
 	aGame moveSpaceship. 
 	aGame moveSpaceship. 
-
-	self assert: spaceshipOne turbines equals: 0.
-	self deny: spaceshipOne hasTurbines.
-
-	
 	aGame moveSpaceship.
+	
 	self assert: (aGame spaceships resolve: 2) equals: spaceshipTwo
 
 ]
