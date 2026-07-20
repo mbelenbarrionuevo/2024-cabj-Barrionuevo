@@ -21,21 +21,21 @@ Spaceship class >> initialize [
 ]
 
 { #category : 'instance creation' }
-Spaceship class >> launchWithFuel: arg1 [
+Spaceship class >> launchWithFuel: anAmountOfFuel [
 
 	counterId := counterId + 1.
-	^ self new initializeLaunch: counterId withFuel: arg1
+	^ self new initializeLaunch: counterId withFuel: anAmountOfFuel
 ]
 
 { #category : 'comparing' }
-Spaceship >> > arg1 [
+Spaceship >> > aSpaceship [
 
-	| tmp1 tmp2 tmp3 tmp4 |
-	tmp1 := objectPosition lap - 1.
-	tmp2 := arg1 position lap - 1.
-	tmp3 := objectPosition cell.
-	tmp4 := arg1 position cell.
-	^ tmp1 > tmp2 or: [ tmp1 = tmp2 and: [ tmp3 > tmp4 ] ]
+	| currentLap targetLap currentCell targetCell |
+	currentLap := objectPosition lap - 1.
+	targetLap := aSpaceship position lap - 1.
+	currentCell := objectPosition cell.
+	targetCell := aSpaceship position cell.
+	^ currentLap > targetLap or: [ currentLap = targetLap and: [ currentCell > targetCell ] ]
 ]
 
 { #category : 'set and get' }
@@ -45,9 +45,9 @@ Spaceship >> amountOfFuel [
 ]
 
 { #category : 'action' }
-Spaceship >> changeCapacity: arg1 [
+Spaceship >> changeCapacity: anAmount [
 
-	aFuelTank changeCapacity: arg1
+	aFuelTank changeCapacity: anAmount 
 ]
 
 { #category : 'set and get' }
@@ -69,11 +69,11 @@ Spaceship >> id [
 ]
 
 { #category : 'initialization' }
-Spaceship >> initializeLaunch: arg1 withFuel: arg2 [
+Spaceship >> initializeLaunch: aSpaceshipId withFuel: anAmountOfFuel [
 
 	objectPosition := Position startGame.
-	aFuelTank := FuelTank fullWith: arg2.
-	id := arg1.
+	aFuelTank := FuelTank fullWith: anAmountOfFuel.
+	id := aSpaceshipId.
 	turbines := 3.
 ]
 
@@ -92,13 +92,13 @@ Spaceship >> loseTurbine [
 ]
 
 { #category : 'action' }
-Spaceship >> move: arg1 [
+Spaceship >> move: aDistance [
 
-	| tmp1 |
-	tmp1 := arg1.
-	arg1 > aFuelTank loadedWith ifTrue: [ tmp1 := aFuelTank loadedWith ].
-	objectPosition updateCell: tmp1.
-	aFuelTank useFuel: tmp1 abs
+	| distanceToMove |
+	distanceToMove := aDistance.
+	aDistance > aFuelTank loadedWith ifTrue: [ distanceToMove := aFuelTank loadedWith ].
+	objectPosition updateCell: distanceToMove.
+	aFuelTank useFuel: distanceToMove abs
 ]
 
 { #category : 'set and get' }

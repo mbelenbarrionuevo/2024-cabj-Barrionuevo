@@ -31,4 +31,3 @@ LoadedRandomProvider >> next [
 	index > values size ifTrue: [ index := 1 ].
 	^ value
 ]
-
