@@ -19,19 +19,19 @@ Class {
 }
 
 { #category : 'instance creation' }
-Game class >> numberOfSpaceships: arg1 with: arg2 playWith: arg3 andGameDeck: arg4 [
+Game class >> numberOfSpaceships: anAmountOfSpaceships with: aBoardCreator playWith: aLoadedDie andGameDeck: aGameDeck [
 
 	^ self new
-		  initializeNumberOfSpaceships: arg1
-		  with: arg2
-		  playWith: arg3
-		  andGameDeck: arg4
+		  initializeNumberOfSpaceships: anAmountOfSpaceships
+		  with: aBoardCreator
+		  playWith: aLoadedDie
+		  andGameDeck: aGameDeck
 ]
 
 { #category : 'activation' }
-Game >> activateCard: arg1 [
+Game >> activateCard: aCard [
 
-	aActiveDeck activate: arg1
+	aActiveDeck activate: aCard 
 ]
 
 { #category : 'accessing' }
@@ -52,9 +52,9 @@ Game >> applyEffectOf: aCell to: aSpaceship [
 ]
 
 { #category : 'action' }
-Game >> applyHyperGravityOn: arg1 withValue: arg2 [
+Game >> applyHyperGravityOn: aSpaceshipOrId withValue: aValue [
 
-	spaceshipsWithHyperGravity at: arg1 put: arg2
+	spaceshipsWithHyperGravity at: aSpaceshipOrId put: aValue 
 ]
 
 { #category : 'action' }
@@ -81,19 +81,19 @@ Game >> checkAndHandleFuelDepletion: aSpaceship startingLap: aStartingLap [
 ]
 
 { #category : 'checking' }
-Game >> checkMoveIsPossible: arg1 for: arg2 [
+Game >> checkMoveIsPossible: aDistance for: aSpaceship [
 
-	| tmp1 tmp2 |
-    tmp2 := arg1.
-    tmp1 := arg2 position.
-    (spaceshipsWithHyperGravity includesKey: arg2) ifTrue: [
-            arg1 < (spaceshipsWithHyperGravity at: arg2) ifTrue: [
-                    arg2 loseTurbine.
-                    tmp2 := 0.
-                    ^ tmp2 ].
-            spaceshipsWithHyperGravity removeKey: arg2 ].
-    tmp2 := tmp1 adjustMovementFor: tmp2 withLimits: finishLine.
-    ^ tmp2
+	| spaceshipPosition adjustedDistance |
+	adjustedDistance := aDistance.
+	spaceshipPosition := aSpaceship position.
+	(spaceshipsWithHyperGravity includesKey: aSpaceship) ifTrue: [
+			aDistance < (spaceshipsWithHyperGravity at: aSpaceship) ifTrue: [
+					aSpaceship loseTurbine.
+					adjustedDistance := 0.
+					^ adjustedDistance ].
+			spaceshipsWithHyperGravity removeKey: aSpaceship ].
+	adjustedDistance := spaceshipPosition adjustMovementFor: adjustedDistance withLimits: finishLine.
+	^ adjustedDistance
 ]
 
 { #category : 'action' }
@@ -177,27 +177,26 @@ Game >> move: spaceship a: numberOfMovements [
 { #category : 'action' }
 Game >> moveSpaceship [
 
-	| tmp1 tmp2 tmp3 |
-	tmp2 := self throwDiceAndCheckEffects.
-	tmp3 := turnManager spaceshipPlaying.
-	tmp1 := tmp3 position.
-	self move: tmp3 a: tmp2.
-	cellToEnter := board at: tmp1 cell.
-	cellToEnter applyEffectTo: tmp3 on: self.
-	tmp1 = finishLine ifTrue: [
+	| currentPosition throwResult currentSpaceship |
+	throwResult := self throwDiceAndCheckEffects.
+	currentSpaceship := turnManager spaceshipPlaying.
+	currentPosition := currentSpaceship position.
+	self move: currentSpaceship a: throwResult.
+	cellToEnter := board at: currentPosition cell.
+	cellToEnter applyEffectTo: currentSpaceship on: self.
+	currentPosition = finishLine ifTrue: [
 			dice := GameOver new.
 			^ self spaceships positionsOfSpaceships ].
-	nil.
 	turnManager nextTurn
 ]
 
 { #category : 'action' }
 Game >> reloadSpaceship [
 
-	| tmp1 |
-	tmp1 := turnManager spaceshipPlaying.
-	tmp1 loadFuel.
-	tmp1 := turnManager nextTurn
+	| currentSpaceship |
+	currentSpaceship := turnManager spaceshipPlaying.
+	currentSpaceship loadFuel.
+	turnManager nextTurn
 ]
 
 { #category : 'removing' }

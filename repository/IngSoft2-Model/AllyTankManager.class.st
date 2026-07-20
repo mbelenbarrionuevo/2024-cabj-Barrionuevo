@@ -9,23 +9,23 @@ Class {
 }
 
 { #category : 'instance creation' }
-AllyTankManager class >> manage: arg1 [
+AllyTankManager class >> manage: aCollectionOfSpaceships [
 
-	^ self new initializeManage: arg1
+	^ self new  initializeManage: aCollectionOfSpaceships
 ]
 
 { #category : 'set and get' }
-AllyTankManager >> ally: arg1 with: arg2 [
+AllyTankManager >> ally: aFirstSpaceship with: aSecondSpaceship [
 
-	(dictionaryOfAllys includesKey: arg1) ifTrue: [
+	(dictionaryOfAllys includesKey: aFirstSpaceship) ifTrue: [
 			Error signal:
-				'Spaceship ' , arg1 id asString , ' already has an ally.' ].
-	(dictionaryOfAllys includesKey: arg2) ifTrue: [
+				'Spaceship ' , aFirstSpaceship id asString , ' already has an ally.' ].
+	(dictionaryOfAllys includesKey: aSecondSpaceship) ifTrue: [
 			Error signal:
-				'Spaceship ' , arg2 id asString , ' already has an ally.' ].
+				'Spaceship ' , aSecondSpaceship id asString , ' already has an ally.' ].
 	dictionaryOfAllys
-		at: arg1 put: arg2;
-		at: arg2 put: arg1
+		at: aFirstSpaceship put: aSecondSpaceship;
+		at: aSecondSpaceship put: aFirstSpaceship
 ]
 
 { #category : 'initialization' }
@@ -54,29 +54,29 @@ AllyTankManager >> spaceship: aSpaceship wantsToUse: anAmountOfFuel [
 ]
 
 { #category : 'set and get' }
-AllyTankManager >> spaceshipsWithEmptyFuelTank: arg1 [
+AllyTankManager >> spaceshipsWithEmptyFuelTank: aSpaceship [
 
-	| tmp1 tmp2 |
-	tmp1 := OrderedCollection new.
-	(dictionaryOfAllys includesKey: arg1) ifFalse: [
-			arg1 fuelTank isEmpty ifFalse: [ ^ tmp1 ].
-			tmp1 add: arg1.
-			^ tmp1 ].
-	tmp2 := dictionaryOfAllys at: arg1.
-	(arg1 fuelTank isEmpty and: tmp2 fuelTank isEmpty)
-		ifFalse: [ ^ tmp1 ].
-	tmp1
-		add: arg1;
-		add: tmp2.
-	^ tmp1
+	| emptySpaceships allySpaceship |
+	emptySpaceships := OrderedCollection new.
+	(dictionaryOfAllys includesKey: aSpaceship) ifFalse: [
+			aSpaceship fuelTank isEmpty ifFalse: [ ^ emptySpaceships ].
+			emptySpaceships add: aSpaceship.
+			^ emptySpaceships ].
+	allySpaceship := dictionaryOfAllys at: aSpaceship.
+	(aSpaceship fuelTank isEmpty and: allySpaceship fuelTank isEmpty)
+		ifFalse: [ ^ emptySpaceships ].
+	emptySpaceships
+		add: aSpaceship;
+		add: allySpaceship.
+	^ emptySpaceships
 ]
 
 { #category : 'set and get' }
-AllyTankManager >> stopAlly: arg1 [
+AllyTankManager >> stopAlly: aSpaceship [
 
-	| tmp1 |
-	tmp1 := dictionaryOfAllys at: arg1.
+	| allySpaceship |
+	allySpaceship := dictionaryOfAllys at: aSpaceship.
 	dictionaryOfAllys
-		removeKey: arg1;
-		removeKey: tmp1
+		removeKey: aSpaceship;
+		removeKey: allySpaceship
 ]

@@ -29,4 +29,3 @@ RewardManager >> initializeWithRandomProvider: aRandomProvider [
 
 	randomProvider := aRandomProvider
 ]
-
