@@ -941,8 +941,8 @@ GameCardTest >> test36SpaceshipCancelsAllyCardThenAllianceStops [
 		         playWith: aLoadedDie
 		         andGameDeck: gameDeck.
 	
-	spaceshipOne := aGame spaceships ranking detect: [ :s | s id = 1 ].
-	spaceshipTwo := aGame spaceships ranking detect: [ :s | s id = 2 ].
+	spaceshipOne := aGame spaceships resolve: 1.
+	spaceshipTwo := aGame spaceships resolve: 2.
 	
 	aGame usePermanentCard: AllyCard toDoEffectFor: spaceshipTwo.
 	
