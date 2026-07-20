@@ -5,8 +5,15 @@ Class {
 	#package : 'IngSoft2-Tests'
 }
 
+{ #category : 'running' }
+SpaceshipTest >> setUp [
+	super setUp.
+	Spaceship initialize
+]
+
 { #category : 'move' }
 SpaceshipTest >> test001SpaceshipInitializeInPositionOneAndMovesOneTimeThenIsInPositionTwo [
+
 
 	| aSpaceship |
 	aSpaceship := Spaceship launchWithFuel: 5.
