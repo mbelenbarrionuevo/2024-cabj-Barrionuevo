@@ -210,3 +210,52 @@ SpaceshipTest >> test025SpaceshipMovesBackwardsThenGoesBackOneLap [
 	Spaceship initialize.
 	self assert: aSpaceship position equals: finalPosition
 ]
+
+{ #category : 'move' }
+SpaceshipTest >> test026SpaceshipLaunchesWithThreeTurbines [
+
+	| aSpaceship |
+	aSpaceship := Spaceship launchWithFuel: 10. 
+	self assert: aSpaceship turbines equals: 3. 
+]
+
+{ #category : 'move' }
+SpaceshipTest >> test027NewlyLaunchedSpaceshipHasTurbines [
+
+	| aSpaceship |
+	aSpaceship := Spaceship launchWithFuel: 10. 
+	self assert: aSpaceship hasTurbines. 
+]
+
+{ #category : 'move' }
+SpaceshipTest >> test028SpaceshipLosesOneTurbineDecreasesCountByOne [
+
+	| aSpaceship |
+	aSpaceship := Spaceship launchWithFuel: 10. 
+	aSpaceship loseTurbine. 
+	self assert: aSpaceship turbines equals: 2.
+	
+]
+
+{ #category : 'move' }
+SpaceshipTest >> test029SpaceshipLosesThreeTurbinesHasNoTurbines [
+
+	| aSpaceship |
+	aSpaceship := Spaceship launchWithFuel: 10. 
+	aSpaceship loseTurbine. 
+	aSpaceship loseTurbine.
+	aSpaceship loseTurbine.
+	self deny: aSpaceship hasTurbines.
+]
+
+{ #category : 'move' }
+SpaceshipTest >> test030SpaceshipsTurbinesCannotBeNegativeWhenLosingMultipleTimes [
+
+	| aSpaceship |
+	aSpaceship := Spaceship launchWithFuel: 10. 
+	aSpaceship loseTurbine. 
+	aSpaceship loseTurbine.
+	aSpaceship loseTurbine.
+	aSpaceship loseTurbine.
+	self assert: aSpaceship turbines equals: 0.
+]

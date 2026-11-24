@@ -85,7 +85,7 @@ Spaceship >> loadFuel [
 
 { #category : 'action' }
 Spaceship >> loseTurbine [
-    turbines := turbines - 1
+    turbines := (turbines - 1) max:0.
 
 
 

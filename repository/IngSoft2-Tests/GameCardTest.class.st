@@ -1259,21 +1259,6 @@ GameCardTest >> test45SpaceshipPlaysReversePolarityOnHyperJumpThenAllOtherSpaces
 ]
 
 { #category : 'spaceshipCardHand' }
-GameCardTest >> test46SpaceshipLaunchesWithThreeTurbines [
-	| spaceship |
-	spaceship := Spaceship launchWithFuel: 10.
-	self assert: spaceship turbines equals: 3.
-	
-]
-
-{ #category : 'spaceshipCardHand' }
-GameCardTest >> test46bNewlyLaunchedSpaceshipIsActiveAndHasTurbines [
-	| spaceship |
-	spaceship := Spaceship launchWithFuel: 10.
-	self assert: spaceship hasTurbines
-]
-
-{ #category : 'spaceshipCardHand' }
 GameCardTest >> test47SpaceshipEntersBlackHoleLosesOneTurbine [
 	| aGame customGameDeck  |
 	aLoadedDie := LoadedDie of: #( 5 ). 
