@@ -155,3 +155,43 @@ TurnManagerTest >> test08OneSpaceshipLostOneTurnAndThenRecoversIt [
 	Spaceship initialize.
 	self assert: currentSpaceshipId equals: 1
 ]
+
+{ #category : 'tests' }
+TurnManagerTest >> test09NextTurnSkipsSpaceshipWithoutTurbines [
+
+	| aTurnManager collectionOfSpaceships  spaceshipOne spaceshipTwo |
+	collectionOfSpaceships := CollectionOfSpaceships
+		                          numberOfSpaceships: 2
+		                          withAmountOfFuel: 5.
+
+	spaceshipOne := collectionOfSpaceships detectSpaceshipWithId: 1.
+	spaceshipTwo := collectionOfSpaceships detectSpaceshipWithId: 2.
+	aTurnManager := TurnManager manage: collectionOfSpaceships.
+	
+	3 timesRepeat: [ spaceshipTwo loseTurbine ].
+	
+	aTurnManager nextTurn.
+	Spaceship initialize.
+	self assert: aTurnManager spaceshipPlaying equals: spaceshipOne.
+]
+
+{ #category : 'tests' }
+TurnManagerTest >> test10NextTurnSignalsErrorWhenAllSpaceshipsHaveZeroTurbines [
+
+	| aTurnManager collectionOfSpaceships  spaceshipOne spaceshipTwo |
+	collectionOfSpaceships := CollectionOfSpaceships
+		                          numberOfSpaceships: 2
+		                          withAmountOfFuel: 5.
+
+	spaceshipOne := collectionOfSpaceships detectSpaceshipWithId: 1.
+	spaceshipTwo := collectionOfSpaceships detectSpaceshipWithId: 2.
+	aTurnManager := TurnManager manage: collectionOfSpaceships.
+	
+	3 timesRepeat: [ spaceshipOne loseTurbine. spaceshipTwo loseTurbine ].
+	
+
+	self
+		should: [ aTurnManager nextTurn ]
+		raise: Error.
+	
+]

@@ -54,8 +54,12 @@ TurnManager >> nextSpaceship [
 
 { #category : 'action' }
 TurnManager >> nextTurn [
-
+	| hasAnySpaceshipWithTurbines |
 	self nextSpaceship.
+	
+	 hasAnySpaceshipWithTurbines := spaceships anySatisfy: [ :aSpaceship | aSpaceship hasTurbines ].
+    hasAnySpaceshipWithTurbines ifFalse: [ 
+        Error signal: 'All spaceships have lost their turbines' ].
 	[ (turnsToSkip at: currentSpaceship) > 0 or: [ currentSpaceship hasTurbines not ] ] whileTrue: [
 		currentSpaceship hasTurbines ifTrue: [ self decrementTurnsOfSpaceship ].
 		self nextSpaceship ]
